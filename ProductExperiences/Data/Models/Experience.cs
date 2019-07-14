@@ -11,6 +11,8 @@ namespace ProductExperiences.Data.Models
 
         public int ProductID { get; set; }
 
+        public string Describe { get; set; }
+
         public int Evaluation { get; set; }
 
         public Recommendation Recommendation { get; set; }

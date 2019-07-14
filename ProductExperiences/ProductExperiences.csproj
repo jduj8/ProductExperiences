@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Mocks\" />
     <Folder Include="Data\Repositories\" />
   </ItemGroup>
 

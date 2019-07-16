@@ -4,15 +4,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Models;
 
 namespace ProductExperiences.Controllers
 {
     public class HomeController : Controller
     {
+        private IExperienceRepository _experienceRepository;
+
+        public HomeController(IExperienceRepository experienceRepository)
+        {
+            _experienceRepository = experienceRepository;
+        }
+
+
+
         public IActionResult Index()
         {
-            return View();
+            var experiences = _experienceRepository.GetAllExperiences();
+            return View(experiences);
         }
 
         public IActionResult About()

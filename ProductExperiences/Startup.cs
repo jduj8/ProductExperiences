@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProductExperiences.Data.Interfaces;
+using ProductExperiences.Data.Mocks;
 
 namespace ProductExperiences
 {
@@ -21,6 +23,8 @@ namespace ProductExperiences
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IProductRepository, MockProductRepository>();
+            services.AddTransient<IExperienceRepository, MockExperienceRepository>();
             services.AddMvc();
         }
 
@@ -42,9 +46,15 @@ namespace ProductExperiences
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                   name: "experiencedetails",
+                   template: "Experience/Details/{experienceID?}",
+                   defaults: new { Controller = "Experience", action = "Details" });
+
+                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}");
             });
+
         }
     }
 }

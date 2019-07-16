@@ -2,6 +2,7 @@
 using ProductExperiences.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +45,16 @@ namespace ProductExperiences.Data.Mocks
                     Evaluation = 7,
                     Recommendation = Recommendation.Možda,
                     Email = "aanic@gmail.com"
+                },
+
+                new Experience
+                {
+                    ExperienceID = 4,
+                    Describe = "Osjeti se značajno ubrzanje računala s ovim diskom. Također disk ima malu potrošnju energije",
+                    ProductID = 4,
+                    Evaluation = 8,
+                    Recommendation = Recommendation.Da,
+                    Email = "jdujic87@gmail.com"
                 }
 
             };
@@ -67,9 +78,20 @@ namespace ProductExperiences.Data.Mocks
             return experience;
         }
 
+        public IEnumerable<Experience> GetAllExperiences()
+        {
+            return _experiences;
+        }
+
         public Experience GetExperience(int experienceID)
         {
             Experience experience = _experiences.FirstOrDefault(e => e.ExperienceID == experienceID);
+            //Debug.WriteLine(experience.Email);
+
+            if (experience == null)
+            {
+                return _experiences.ElementAt(1);
+            }
 
             return experience;
         }
@@ -79,6 +101,22 @@ namespace ProductExperiences.Data.Mocks
             IEnumerable<Experience> experiences = _experiences.Where(e => e.ProductID == productID);
 
             return experiences;
+        }
+
+        public IEnumerable<Experience> GetLastThreeExperiences()
+        {
+            List<Experience> ex = new List<Experience>();
+
+            for (int i=_experiences.Count - 1; i >= (_experiences.Count - 4); i--)
+            {
+                ex.Add(_experiences.ElementAt(i));
+            }
+
+            IEnumerable<Experience> experiences = ex;
+
+            return experiences;
+
+
         }
 
         public Experience UpdateExperience(Experience experienceChanges)

@@ -13,6 +13,5 @@ namespace ProductExperiences.Data.Models
 
         public Category Category { get; set; }
 
-        public string PhotoPath { get; set; }
     }
 }

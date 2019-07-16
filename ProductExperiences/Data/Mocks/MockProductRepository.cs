@@ -72,7 +72,6 @@ namespace ProductExperiences.Data.Mocks
             {
                 product.ProductName = productChanges.ProductName;
                 product.Category = productChanges.Category;
-                product.PhotoPath = productChanges.PhotoPath;
             }
 
             return product;

@@ -12,8 +12,8 @@ using System;
 namespace ProductExperiences.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190716211233_Initial")]
-    partial class Initial
+    [Migration("20190716214032_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,8 @@ namespace ProductExperiences.Migrations
 
                     b.Property<string>("Describe");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<int>("Evaluation");
 
@@ -53,7 +54,9 @@ namespace ProductExperiences.Migrations
 
                     b.Property<int>("Category");
 
-                    b.Property<string>("ProductName");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("ProductID");
 

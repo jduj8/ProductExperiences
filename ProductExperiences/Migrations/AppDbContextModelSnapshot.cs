@@ -28,7 +28,8 @@ namespace ProductExperiences.Migrations
 
                     b.Property<string>("Describe");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<int>("Evaluation");
 
@@ -52,7 +53,9 @@ namespace ProductExperiences.Migrations
 
                     b.Property<int>("Category");
 
-                    b.Property<string>("ProductName");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("ProductID");
 

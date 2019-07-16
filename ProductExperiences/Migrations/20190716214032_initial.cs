@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ProductExperiences.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace ProductExperiences.Migrations
                     ProductID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Category = table.Column<int>(nullable: false),
-                    ProductName = table.Column<string>(nullable: true)
+                    ProductName = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace ProductExperiences.Migrations
                     ExperienceID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Describe = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
                     Evaluation = table.Column<int>(nullable: false),
                     PhotoPath = table.Column<string>(nullable: true),
                     ProductID = table.Column<int>(nullable: false),

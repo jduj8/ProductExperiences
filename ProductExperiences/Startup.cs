@@ -4,18 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProductExperiences.Data;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Mocks;
+using ProductExperiences.Data.Repositories;
 
 namespace ProductExperiences
 {
     public class Startup
     {
+        private IConfiguration _config;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _config = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -23,8 +28,11 @@ namespace ProductExperiences
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IProductRepository, MockProductRepository>();
-            services.AddTransient<IExperienceRepository, MockExperienceRepository>();
+            services.AddDbContextPool<AppDbContext>(
+                options => options.UseSqlServer(_config.GetConnectionString("ProductExperiencesDBConnection")));
+
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IExperienceRepository, ExperienceRepository>();
             services.AddMvc();
         }
 

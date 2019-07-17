@@ -2,10 +2,10 @@
 
 <div class="col-sm-4">
     <div class="thumbnail" style="background-color:white; margin-top:10px; border-color:gray; border-width:medium">
-        <img style="border:solid; border-color:lightgray;" src="~/images/test.jpg" alt="" />
+        <img style="border:solid; border-color:lightgray;" width="350" height="350" src="@Model.PhotoPath" alt="" />
         <div class="caption">         
             <h4 class="panel-heading control-label">
-                Mjerač temperature PEAK 
+                @Model.Product.ProductName
             </h4>
         </div>
 
@@ -19,7 +19,7 @@
                     <a class="btn btn-success"
                        asp-controller="Experience"
                        asp-action="Details"
-                       asp-route-productID="@Model.ExperienceID">
+                       asp-route-experienceID="@Model.ExperienceID">
                         Detalji
                     </a>
                 </p>

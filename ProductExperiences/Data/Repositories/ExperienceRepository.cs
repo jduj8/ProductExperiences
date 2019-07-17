@@ -1,4 +1,5 @@
-﻿using ProductExperiences.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -40,18 +41,18 @@ namespace ProductExperiences.Data.Repositories
 
         public IEnumerable<Experience> GetAllExperiences()
         {
-            return _context.Experiences;
+            return _context.Experiences.Include(p => p.Product);
         }
 
         public Experience GetExperience(int experienceID)
         {
-            var experience = _context.Experiences.FirstOrDefault(e => e.ExperienceID == experienceID);
+            var experience = _context.Experiences.Include(p => p.Product).FirstOrDefault(e => e.ExperienceID == experienceID);
             return experience;
         }
 
         public IEnumerable<Experience> GetExperiencesWithProduct(int productID)
         {
-            IEnumerable<Experience> experiences = _context.Experiences.Where(e => e.ProductID == productID);
+            IEnumerable<Experience> experiences = _context.Experiences.Where(e => e.ProductID == productID).Include(p => p.Product);
             return experiences;
 
         }

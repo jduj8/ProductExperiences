@@ -37,7 +37,7 @@ namespace ProductExperiences
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -50,6 +50,7 @@ namespace ProductExperiences
             }
 
             app.UseStaticFiles();
+            //DbInitializer.Seed(serviceProvider.GetRequiredService<AppDbContext>());
 
             app.UseMvc(routes =>
             {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
+using ProductExperiences.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,6 +41,7 @@ namespace ProductExperiences.Controllers
             return View(experience);
         }
 
+        /*
         public string AddData()
         {
 
@@ -65,6 +67,42 @@ namespace ProductExperiences.Controllers
             _experienceRepository.AddExperience(experience);
 
             return "adding data to DB";
+        }
+        */
+
+        [HttpGet]
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(ExperienceCreateViewModel experienceCreateVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = new Product
+                {
+                    ProductName = experienceCreateVM.ProductName,
+                    Category = experienceCreateVM.Category
+                };
+
+                var addedProduct = _productRepository.AddProduct(product);
+
+                var experience = new Experience
+                {
+                    ProductID = addedProduct.ProductID,
+                    Evaluation = experienceCreateVM.Evaluation,
+                    Describe = experienceCreateVM.Describe,
+                    Recommendation = experienceCreateVM.Recommendation,
+                    Email = "test@gmail.com"
+                };
+
+                var addedExperience = _experienceRepository.AddExperience(experience);
+                return RedirectToAction("details", new { experienceID = addedExperience.ExperienceID });
+            }
+
+            return View();
         }
 
 

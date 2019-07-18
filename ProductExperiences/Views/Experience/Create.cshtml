@@ -52,10 +52,32 @@
     </div>
 
     <div class="form-group row">
+
+        <div class="text-center">
+            <div class="fileUpload btn btn-default">
+                <span>Učitaj sliku proizvoda</span>
+                <input id="uploadBtn" asp-for="Photo" accept=".png,.jpg,.jpeg,.gif" asp- type="file" class="upload" />
+            </div>
+            <input id="uploadFile" class="form-control" style="max-width:40%;margin-left:30%;" placeholder="Odabrana slika" disabled="disabled" />
+        </div>
+    </div>
+
+    <div class="form-group row">
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Create</button>
         </div>
     </div>
 
 </form>
+
+@section Scripts{ 
+<script>
+    document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("uploadFile").value = this.value.split("\\").pop();
+    };
+</script>
+
+}
+
+
 

@@ -1,11 +1,26 @@
 ﻿@model Experience
 
+@{
+    var photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
+    var productName = "";
+    if (Model.Product.ProductName.Length > 31)
+    {
+        productName = Model.Product.ProductName.Substring(0, 27) + "...";
+    }
+
+    else
+    {
+        productName = Model.Product.ProductName;
+
+    }
+}
+
 <div class="col-sm-4">
     <div class="thumbnail" style="background-color:white; margin-top:10px; border-color:gray; border-width:medium">
-        <img style="border:solid; border-color:lightgray;" width="350" height="350" src="@Model.PhotoPath" alt="" />
+        <img style="border:solid; border-color:lightgray;" width="350" height="350" src="@photoPath" alt="" />
         <div class="caption">         
             <h4 class="panel-heading control-label">
-                @Model.Product.ProductName
+                @productName
             </h4>
         </div>
 

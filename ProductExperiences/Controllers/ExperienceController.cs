@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
@@ -16,11 +18,13 @@ namespace ProductExperiences.Controllers
 
         private readonly IProductRepository _productRepository;
         private readonly IExperienceRepository _experienceRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ExperienceController(IProductRepository productRepository, IExperienceRepository experienceRepository)
+        public ExperienceController(IProductRepository productRepository, IExperienceRepository experienceRepository, IHostingEnvironment hostingEnvironment)
         {
             _productRepository = productRepository;
             _experienceRepository = experienceRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: /<controller>/
@@ -89,13 +93,25 @@ namespace ProductExperiences.Controllers
 
                 var addedProduct = _productRepository.AddProduct(product);
 
+                string uniqueFileName = null;
+                if (experienceCreateVM.Photo != null)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images/products");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + experienceCreateVM.Photo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    experienceCreateVM.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    
+                }
+
                 var experience = new Experience
                 {
                     ProductID = addedProduct.ProductID,
                     Evaluation = experienceCreateVM.Evaluation,
                     Describe = experienceCreateVM.Describe,
                     Recommendation = experienceCreateVM.Recommendation,
-                    Email = "test@gmail.com"
+                    Email = "test@gmail.com",
+                    PhotoPath = uniqueFileName
+                    
                 };
 
                 var addedExperience = _experienceRepository.AddExperience(experience);

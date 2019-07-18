@@ -3,11 +3,12 @@
 
 @{
     ViewData["Title"] = "Details of experience";
+    var photoPath = "~/Images/Products/" + (Model.PhotoPath ?? "noImage.png");
 }
 
 <div class="container thumbnail text-center" style="background-color:whitesmoke; margin-top:21px;">
     <h2>@Model.Product.ProductName</h2>
-    <img width="350" height="350" class="card-img-top" src="~/images/test.jpg" asp-append-version="true" />
+    <img width="350" height="350" class="card-img-top" src="@photoPath" asp-append-version="true" />
     <div class="text-left">
         <div style="border:inset; padding:2px; margin-top:5px;">
             <label class="text-muted">Korisničko iskustvo s ovim proizvodom:</label>

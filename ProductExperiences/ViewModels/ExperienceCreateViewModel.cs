@@ -1,4 +1,5 @@
-﻿using ProductExperiences.Data.Models;
+﻿using Microsoft.AspNetCore.Http;
+using ProductExperiences.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,5 +25,7 @@ namespace ProductExperiences.ViewModels
 
         [Required(ErrorMessage = "Preporucujete li proizvod?")]
         public Recommendation Recommendation { get; set; }
+
+        public IFormFile Photo { get; set; }
     }
 }

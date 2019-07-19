@@ -83,7 +83,7 @@ namespace ProductExperiences.Controllers
         [HttpPost]
         public IActionResult Create(ExperienceCreateViewModel experienceCreateVM)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)//
             {
                 var product = new Product
                 {

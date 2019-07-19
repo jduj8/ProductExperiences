@@ -33,8 +33,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav" style="margin-top:10px; font-size:medium;">
-                    
-                    <li><a asp-area="" asp-controller="" asp-action="">Kategorija</a></li>
+                    @await Component.InvokeAsync("CategoryMenu")
                     <li><a asp-area="" asp-controller="Experience" asp-action="Create">Podijeli iskustvo</a></li>
                     <li><a asp-area="" asp-controller="" asp-action="">Moja iskustva</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>                                      

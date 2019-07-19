@@ -60,6 +60,11 @@ namespace ProductExperiences
                    defaults: new { Controller = "Experience", action = "Details" });
 
                 routes.MapRoute(
+                    name: "categoryfilter",
+                    template: "Experience/{action}/{category?}",
+                    defaults: new { Controller = "Experience", action = "List" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}");
             });

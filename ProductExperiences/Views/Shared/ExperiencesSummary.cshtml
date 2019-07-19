@@ -4,9 +4,9 @@
     var photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
     var photoTest = "~/images/products/noImage.png";
     var productName = "";
-    if (Model.Product.ProductName.Length > 31)
+    if (Model.Product.ProductName.Length > 30)
     {
-        productName = Model.Product.ProductName.Substring(0, 27) + "...";
+        productName = Model.Product.ProductName.Substring(0, 26) + "...";
     }
 
     else

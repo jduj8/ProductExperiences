@@ -96,6 +96,11 @@ namespace ProductExperiences.Data.Mocks
             return experience;
         }
 
+        public IEnumerable<Experience> GetExperiencesFromCategory(string category)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Experience> GetExperiencesWithProduct(int productID)
         {
             IEnumerable<Experience> experiences = _experiences.Where(e => e.ProductID == productID);

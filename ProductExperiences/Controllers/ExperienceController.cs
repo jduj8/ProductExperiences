@@ -33,10 +33,32 @@ namespace ProductExperiences.Controllers
             return View();
         }
 
-        public ViewResult List()
+        public ViewResult List(string category)
         {
-            var experiences = _experienceRepository.GetAllExperiences();
-            return View(experiences);
+            string _category = category;
+
+            string currentCategory = string.Empty;
+
+            IEnumerable<Experience> experiences = new List<Experience>();
+
+            if (string.IsNullOrEmpty(category))
+            {
+                experiences = _experienceRepository.GetAllExperiences();
+            }
+
+            else
+            {
+                experiences = _experienceRepository.GetExperiencesFromCategory(category);
+            }
+            
+
+            var experienceListVM = new ExperienceListViewModel()
+            {
+                Experiences = experiences,
+                Category = category
+            };
+            //var experiences = _experienceRepository.GetAllExperiences();
+            return View(experienceListVM);
         }
 
         public ViewResult Details(int experienceID)

@@ -1,15 +1,17 @@
-﻿@model IEnumerable<Experience>
+﻿@model ExperienceListViewModel
 
 
 @{
     ViewData["Title"] = "List of experiences";
+    var category = string.Empty;
+    category = string.IsNullOrEmpty(Model.Category) ? "Sve kategorije" : Model.Category;
 }
 
-<h2 class="page-header">Korisnička iskustva s proizvodima</h2>
+<h2 class="page-header">Korisnička iskustva iz kategorije: <span style="color:blue; font-family:Dubai">@category</span></h2>
 
 
 @{
-    foreach (var experience in Model)
+    foreach (var experience in Model.Experiences)
     {
         @Html.Partial("ExperiencesSummary", experience)
     }

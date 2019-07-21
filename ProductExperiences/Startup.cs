@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,9 @@ namespace ProductExperiences
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(_config.GetConnectionString("ProductExperiencesDBConnection")));
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IExperienceRepository, ExperienceRepository>();
             services.AddMvc();
@@ -51,6 +55,8 @@ namespace ProductExperiences
 
             app.UseStaticFiles();
             //DbInitializer.Seed(serviceProvider.GetRequiredService<AppDbContext>());
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

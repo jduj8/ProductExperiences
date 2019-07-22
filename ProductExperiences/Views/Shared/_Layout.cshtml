@@ -11,6 +11,7 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <link href="~/css/FooterBottom.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -20,41 +21,45 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:khaki;" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index" style="margin-bottom:15px;">
-                    <img src="~/images/home.png" height="40" width="40" />
-                </a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav" style="margin-top:10px; font-size:medium;">
-                    @await Component.InvokeAsync("CategoryMenu")
-                    <li><a asp-area="" asp-controller="Experience" asp-action="Create">Podijeli iskustvo</a></li>
-                    <li><a asp-area="" asp-controller="" asp-action="">Moja iskustva</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>
-                </ul>
-                @await Html.PartialAsync("LoginPartial")
-                
-            </div>
-        </div>
-    </nav>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:khaki;" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index" style="margin-bottom:15px;">
+                        <img src="~/images/home.png" height="40" width="40" />
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav" style="margin-top:10px; font-size:medium;">
+                        @await Component.InvokeAsync("CategoryMenu")
+                        <li><a asp-area="" asp-controller="Experience" asp-action="Create">Podijeli iskustvo</a></li>
+                        <li><a asp-area="" asp-controller="" asp-action="">Moja iskustva</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>
+                    </ul>
+                    @await Html.PartialAsync("LoginPartial")
 
-    <div class="container body-content">
-        @RenderBody()
-    </div>
-    <div class="text-center">
-        <footer class="panel-footer">
-            <p>&copy; 2019 - ProductExperiences</p>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div class="container body-content">
+            @RenderBody()
+            
+        </div>
+
+        <footer class="text-center">
+            <p>&copy; @DateTime.Now.Year - Product experiences</p>
         </footer>
     </div>
-
+   
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

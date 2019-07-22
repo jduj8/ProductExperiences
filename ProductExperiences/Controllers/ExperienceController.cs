@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.Data.Interfaces;
@@ -99,12 +100,14 @@ namespace ProductExperiences.Controllers
         */
 
         [HttpGet]
+        [Authorize]
         public ViewResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(ExperienceCreateViewModel experienceCreateVM)
         {
             if (ModelState.IsValid)//

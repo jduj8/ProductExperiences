@@ -21,6 +21,13 @@ namespace ProductExperiences.Controllers
             _signInManager = signInManager;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("index", "home");
+        }
+
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Register()
@@ -56,7 +63,42 @@ namespace ProductExperiences.Controllers
 
             return View(registerVM);
         }
-        
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+                var result = await _signInManager.PasswordSignInAsync(
+                    model.UserName, model.Password, model.RememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl); //defense from attackers with their url
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "home");
+                    }
+                }
+
+
+                ModelState.AddModelError(string.Empty, "Invalid login attemp");
+
+            }
+            return View(model);
+        }
+
     }
 }
  

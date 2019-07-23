@@ -45,5 +45,10 @@ namespace ProductExperiences.Data.Repositories
 
         }
 
+        public IEnumerable<Product> GetProductsFromCategory(string category)
+        {
+            return _context.Products.Where(p => p.Category.ToString() == category);
+        }
+
     }
 }

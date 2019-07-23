@@ -148,6 +148,18 @@ namespace ProductExperiences.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Authorize]
+        public ViewResult InitialCreate()
+        {
+            return View();
+        }
 
+        public JsonResult GetProductsFromCategory(string category)
+        {
+            IEnumerable<Product> products = _productRepository.GetProductsFromCategory(category);
+
+            return Json(products);
+        }
     }
 }

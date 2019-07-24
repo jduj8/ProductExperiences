@@ -19,6 +19,7 @@ namespace ProductExperiences.Data.Models
         Igračke,
         Vozila,
         BijelaTehnika,
+        AudioIVideoTehnika,
         Ostalo
 
     }

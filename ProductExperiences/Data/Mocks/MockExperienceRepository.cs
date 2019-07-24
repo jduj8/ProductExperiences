@@ -24,7 +24,7 @@ namespace ProductExperiences.Data.Mocks
                     Describe = "Zadovoljan sam navedenim proizvodom. Zasad nisam zamijetio neku manu na proizvodu",
                     Evaluation = 8,
                     Recommendation = Recommendation.Da,
-                    Email = "jdujic87@gmail.com"
+                    UserName = "jdujic87@gmail.com"
                 },
 
                 new Experience
@@ -34,7 +34,7 @@ namespace ProductExperiences.Data.Mocks
                     ProductID = 3,
                     Evaluation = 10,
                     Recommendation = Recommendation.Da,
-                    Email = "iivic@gmail.com"
+                    UserName = "iivic@gmail.com"
                 },
 
                 new Experience
@@ -44,7 +44,7 @@ namespace ProductExperiences.Data.Mocks
                     ProductID = 2,
                     Evaluation = 7,
                     Recommendation = Recommendation.Možda,
-                    Email = "aanic@gmail.com"
+                    UserName = "aanic@gmail.com"
                 },
 
                 new Experience
@@ -54,7 +54,7 @@ namespace ProductExperiences.Data.Mocks
                     ProductID = 4,
                     Evaluation = 8,
                     Recommendation = Recommendation.Da,
-                    Email = "jdujic87@gmail.com"
+                    UserName = "jdujic87@gmail.com"
                 }
 
             };

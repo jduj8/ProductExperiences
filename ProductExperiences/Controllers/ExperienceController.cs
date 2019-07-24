@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
@@ -136,7 +138,7 @@ namespace ProductExperiences.Controllers
                     Evaluation = experienceCreateVM.Evaluation,
                     Describe = experienceCreateVM.Describe,
                     Recommendation = experienceCreateVM.Recommendation,
-                    Email = "test@gmail.com",
+                    UserName = User.FindFirst(ClaimTypes.Name).Value,
                     PhotoPath = uniqueFileName
                     
                 };
@@ -161,5 +163,15 @@ namespace ProductExperiences.Controllers
 
             return Json(products);
         }
+
+        public JsonResult GetProductName(string search)
+        {
+            IEnumerable<Product> products = _productRepository.GetAllProducts();
+
+            IEnumerable<string> productsNames = products.Where(p => p.ProductName.Contains(search)).Select(p => p.ProductName).ToList();
+
+            return Json(productsNames);
+        }
+
     }
 }

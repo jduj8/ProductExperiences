@@ -24,8 +24,8 @@ namespace ProductExperiences.Data.Models
         public Recommendation Recommendation { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Neispravan mail")]
-        public string Email { get; set; }
+        [MinLength(4, ErrorMessage = "Korisničko ime mora sadržavati najmanje 4 znaka")]
+        public string UserName { get; set; }
 
         public string PhotoPath { get; set; }
 

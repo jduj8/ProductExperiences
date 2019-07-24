@@ -8,7 +8,7 @@
     <div class="form-group row">
         <label asp-for="ProductName" class="col-sm-2 col-form-label">Naziv proizvoda:</label>
         <div class="col-sm-10">
-            <input asp-for="ProductName" class="form-control" placeholder="Naziv">
+            <input id="inProName" asp-for="ProductName" class="form-control" placeholder="Naziv">
             <span asp-validation-for="ProductName" class="text-danger"></span>
         </div>
     </div>
@@ -75,6 +75,29 @@
     document.getElementById("uploadBtn").onchange = function () {
         document.getElementById("uploadFile").value = this.value.split("\\").pop();
     };
+
+    $("#inProName").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '@Url.Action("GetProductName", "Experience")',
+                dataType: "json",
+                data: { search: $("#inProName").val() },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return { label: item, value: item };
+                     }))
+
+                },
+                error: function (xhr, status, error) {
+                    alert("Error");
+
+                }
+            });
+
+        }
+
+    });
+        
 </script>
 
 }

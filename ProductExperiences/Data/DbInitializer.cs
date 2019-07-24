@@ -26,7 +26,7 @@ namespace ProductExperiences.Data
                         Describe = "Zadovoljan sam navedenim proizvodom. Zasad nisam zamijetio neku manu na proizvodu",
                         Evaluation = 8,
                         Recommendation = Recommendation.Da,
-                        Email = "jdujic87@gmail.com"
+                        UserName = "jdujic87@gmail.com"
                     },
 
                     
@@ -37,7 +37,7 @@ namespace ProductExperiences.Data
                         Product = Products["Makita aku bušilica 26v/5 Ah 2018 god"],
                         Evaluation = 10,
                         Recommendation = Recommendation.Da,
-                        Email = "iivic@gmail.com"
+                        UserName = "iivic@gmail.com"
                     },
                     
 
@@ -48,7 +48,7 @@ namespace ProductExperiences.Data
                         Product = Products["ASUS Laptop X540MA"],
                         Evaluation = 7,
                         Recommendation = Recommendation.Možda,
-                        Email = "aanic@gmail.com"
+                        UserName = "aanic@gmail.com"
                     },
 
                     new Experience
@@ -58,7 +58,7 @@ namespace ProductExperiences.Data
                         Product = Products["Kingston SSD A400 120GB, SA400S37/120G"],
                         Evaluation = 8,
                         Recommendation = Recommendation.Da,
-                        Email = "jdujic87@gmail.com"
+                        UserName = "jdujic87@gmail.com"
                     },
 
                     new Experience
@@ -68,7 +68,7 @@ namespace ProductExperiences.Data
                         Product = Products["Opel Astra Sport Tourer 1.7 cdti 110ks 2014. god. COSMO"],
                         Evaluation = 8,
                         Recommendation = Recommendation.Da,
-                        Email = "kkarlovic@gmail.com"
+                        UserName = "kkarlovic@gmail.com"
                     
                     }
 

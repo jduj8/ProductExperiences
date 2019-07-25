@@ -157,21 +157,7 @@ namespace ProductExperiences.Controllers
             return View();
         }
 
-        public JsonResult GetProductsFromCategory(string category)
-        {
-            IEnumerable<Product> products = _productRepository.GetProductsFromCategory(category);
-
-            return Json(products);
-        }
-
-        public JsonResult GetProductName(string search)
-        {
-            IEnumerable<Product> products = _productRepository.GetAllProducts();
-
-            IEnumerable<string> productsNames = products.Where(p => p.ProductName.Contains(search)).Select(p => p.ProductName).ToList();
-
-            return Json(productsNames);
-        }
+        
 
     }
 }

@@ -75,28 +75,6 @@
     document.getElementById("uploadBtn").onchange = function () {
         document.getElementById("uploadFile").value = this.value.split("\\").pop();
     };
-
-    $("#inProName").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: '@Url.Action("GetProductName", "Experience")',
-                dataType: "json",
-                data: { search: $("#inProName").val() },
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return { label: item, value: item };
-                     }))
-
-                },
-                error: function (xhr, status, error) {
-                    alert("Error");
-
-                }
-            });
-
-        }
-
-    });
         
 </script>
 

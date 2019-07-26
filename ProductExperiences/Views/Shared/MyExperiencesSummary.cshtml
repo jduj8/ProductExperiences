@@ -1,0 +1,50 @@
+﻿@model Experience
+
+@{
+    var photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
+    var productName = "";
+    if (Model.Product.ProductName.Length > 30)
+    {
+        productName = Model.Product.ProductName.Substring(0, 26) + "...";
+    }
+
+    else
+    {
+        productName = Model.Product.ProductName;
+
+    }
+}
+
+<div class="col-sm-4">
+    <div class="thumbnail" style="background-color:white; margin-top:10px; border-color:gray; border-width:medium">
+        <img style="border:solid; border-color:lightgray;" width="350" height="350" src="~/images/products/@(Model.PhotoPath ?? "noImage.png")" alt="" />
+        <div class="caption">
+            <h4 class="panel-heading control-label">
+                @productName
+            </h4>
+        </div>
+
+        <div style="display:inline;">
+
+            <div class="text-right">
+                <a class="btn btn-warning"
+                   asp-controller="Experience"
+                   asp-action="Edit"
+                   asp-route-experienceID="@Model.ExperienceID">
+                    Ažuriraj
+                </a>
+
+                <a class="btn btn-danger"
+                   asp-controller="Experience"
+                   asp-action="Delete"
+                   asp-route-experienceID="@Model.ExperienceID">
+                    Briši
+                </a>
+            </div>
+        </div>
+        
+       
+        <p class="text-center" style="font-size:small;">datum</p>
+        
+    </div>
+</div>

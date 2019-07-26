@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Experience>
+
+@{
+    ViewData["Title"] = "My experience list";
+}
+
+<h2 class="page-header">Moja iskustva</h2>
+
+
+@{
+    foreach (var experience in Model)
+    {
+        @Html.Partial("MyExperiencesSummary", experience)
+    }
+}

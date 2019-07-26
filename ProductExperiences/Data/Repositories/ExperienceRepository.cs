@@ -50,6 +50,11 @@ namespace ProductExperiences.Data.Repositories
             return experience;
         }
 
+        public IEnumerable<Experience> GetExperienceOfUser(string userName)
+        {
+            return _context.Experiences.Include(p => p.Product).Where(e => e.UserName == userName);
+        }
+
         public IEnumerable<Experience> GetExperiencesFromCategory(string category)
         {
             return _context.Experiences.Include(p => p.Product).Where(e => e.Product.Category.ToString() == category);

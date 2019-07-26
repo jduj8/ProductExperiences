@@ -157,7 +157,20 @@ namespace ProductExperiences.Controllers
             return View();
         }
 
-        
+        [Authorize]
+        public ViewResult MyList()
+        {
+            IEnumerable<Experience> myExperiences = _experienceRepository.GetExperienceOfUser(User.FindFirst(ClaimTypes.Name).Value);
+
+            return View(myExperiences);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ViewResult Edit()
+        {
+            return View();
+        }
 
     }
 }

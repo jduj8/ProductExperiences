@@ -39,7 +39,7 @@
                     <ul class="nav navbar-nav" style="margin-top:10px; font-size:medium;">
                         @await Component.InvokeAsync("CategoryMenu")
                         <li><a asp-area="" asp-controller="Experience" asp-action="Create">Podijeli iskustvo</a></li>
-                        <li><a asp-area="" asp-controller="" asp-action="">Moja iskustva</a></li>
+                        <li><a asp-area="" asp-controller="Experience" asp-action="MyList">Moja iskustva</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>
                     </ul>
                     @await Html.PartialAsync("LoginPartial")

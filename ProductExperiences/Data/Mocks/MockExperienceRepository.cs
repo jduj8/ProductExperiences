@@ -96,6 +96,11 @@ namespace ProductExperiences.Data.Mocks
             return experience;
         }
 
+        public IEnumerable<Experience> GetExperienceOfUser(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Experience> GetExperiencesFromCategory(string category)
         {
             throw new NotImplementedException();

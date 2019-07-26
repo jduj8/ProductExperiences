@@ -16,6 +16,7 @@ namespace ProductExperiences.Data.Interfaces
         Experience UpdateExperience(Experience experienceChanges);
         Experience DeleteExperience(int experienceID);
         IEnumerable<Experience> GetExperiencesFromCategory(string category);
+        IEnumerable<Experience> GetExperienceOfUser(string userName);
 
     }
 }

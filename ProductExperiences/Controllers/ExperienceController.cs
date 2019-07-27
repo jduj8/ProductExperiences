@@ -172,5 +172,16 @@ namespace ProductExperiences.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult Delete(int experienceID)
+        {
+            var experience = _experienceRepository.DeleteExperience(experienceID);
+
+            return RedirectToAction("MyList", "Experience");
+        }
+
+        
+
     }
 }

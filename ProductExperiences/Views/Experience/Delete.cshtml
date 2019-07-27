@@ -1,0 +1,10 @@
+﻿@model Experience
+
+@{
+    ViewData["Title"] = "Delete experience";
+}
+
+<h3>Jesti li sigurni da želite obrisati podijeljeno iskustvo za proizvod naziva @Model.Product.ProductName?</h3>
+<form method="post" asp-controller="experience" asp-action="delete">
+    <input type="submit" asp-for="ExperienceID" value="Da, izbriši iskustvo" class="btn btn-danger" />
+</form>

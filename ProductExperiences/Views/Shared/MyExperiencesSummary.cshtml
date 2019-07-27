@@ -24,9 +24,11 @@
             </h4>
         </div>
 
+
         <div style="display:inline;">
 
             <div class="text-right">
+
                 <a class="btn btn-warning"
                    asp-controller="Experience"
                    asp-action="Edit"
@@ -34,12 +36,9 @@
                     Ažuriraj
                 </a>
 
-                <a class="btn btn-danger"
-                   asp-controller="Experience"
-                   asp-action="Delete"
-                   asp-route-experienceID="@Model.ExperienceID">
-                    Briši
-                </a>
+                <form style="display:inline" asp-action="Delete" asp-controller="Experience" method="post" asp-route-experienceID="@Model.ExperienceID">
+                    <button onclick = "return confirm('Jeste li sigurni da želite obrisati podijeljeno iskustvo za proizvod @Model.Product.ProductName?');" class="btn btn-danger">Briši</button>
+                </form>
             </div>
         </div>
         

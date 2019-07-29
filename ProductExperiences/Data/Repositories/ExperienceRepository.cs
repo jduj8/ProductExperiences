@@ -3,6 +3,7 @@ using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -74,8 +75,23 @@ namespace ProductExperiences.Data.Repositories
 
         public Experience UpdateExperience(Experience experienceChanges)
         {
+            
             var experience = _context.Experiences.Attach(experienceChanges);
             experience.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            
+            /*
+            Debug.WriteLine(experienceChanges.ExperienceID);
+            Experience experience = _context.Experiences.Include(p => p.Product).FirstOrDefault(e => e.ExperienceID == experienceChanges.ExperienceID);
+            Debug.WriteLine(experience.ExperienceID);
+            experience.ProductID = experienceChanges.ProductID;
+            experience.Evaluation = experienceChanges.Evaluation;
+            experience.Describe = experienceChanges.Describe;
+            experience.PhotoPath = experienceChanges.PhotoPath;
+            experience.Recommendation = experienceChanges.Recommendation;
+
+            _context.Experiences.Update(experienceChanges);
+            */
+
             _context.SaveChanges();
             return experienceChanges;
         }

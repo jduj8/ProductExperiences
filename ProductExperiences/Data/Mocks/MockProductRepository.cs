@@ -69,6 +69,11 @@ namespace ProductExperiences.Data.Mocks
             throw new NotImplementedException();
         }
 
+        public Product GetProductUsingNameAndCategory(string productName, Category category)
+        {
+            throw new NotImplementedException();
+        }
+
         public Product UpdateProduct(Product productChanges)
         {
             var product = _products.FirstOrDefault(p => p.ProductID == productChanges.ProductID);
@@ -82,6 +87,5 @@ namespace ProductExperiences.Data.Mocks
             return product;
         }
 
-        
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.Data.Interfaces;
@@ -122,15 +124,8 @@ namespace ProductExperiences.Controllers
 
                 var addedProduct = _productRepository.AddProduct(product);
 
-                string uniqueFileName = null;
-                if (experienceCreateVM.Photo != null)
-                {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images/products");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + experienceCreateVM.Photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    experienceCreateVM.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                    
-                }
+                string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo);
+                
 
                 var experience = new Experience
                 {
@@ -167,8 +162,70 @@ namespace ProductExperiences.Controllers
 
         [HttpGet]
         [Authorize]
-        public ViewResult Edit()
+        public ViewResult Edit(int experienceID)
         {
+            Experience experience = _experienceRepository.GetExperience(experienceID);
+
+            ExperienceEditViewModel experienceEditVM = new ExperienceEditViewModel
+            {
+                ExperienceID = experience.ExperienceID,
+                ProductName = experience.Product.ProductName,
+                Category = experience.Product.Category,
+                Evaluation = experience.Evaluation,
+                Describe = experience.Describe,
+                Recommendation = experience.Recommendation,
+                ExistingPhotoPath = experience.PhotoPath
+                
+
+            };
+
+
+            return View(experienceEditVM);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(ExperienceEditViewModel experienceEditVM)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var product = _productRepository.GetProductUsingNameAndCategory(experienceEditVM.ProductName, experienceEditVM.Category);
+                if (product == null)
+                {
+                    product = new Product
+                    {
+                        ProductName = experienceEditVM.ProductName,
+                        Category = experienceEditVM.Category
+                    };
+
+                    _productRepository.AddProduct(product);
+                }
+
+                Debug.WriteLine(product.ProductID);
+
+                string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceEditVM.Photo);               
+
+                var photoPath = uniqueFileName == null ? experienceEditVM.ExistingPhotoPath : uniqueFileName;
+
+                var experience = new Experience
+                {
+                    ExperienceID = experienceEditVM.ExperienceID,
+                    ProductID = product.ProductID,
+                    Evaluation = experienceEditVM.Evaluation,
+                    Describe = experienceEditVM.Describe,
+                    Recommendation = experienceEditVM.Recommendation,
+                    UserName = User.FindFirst(ClaimTypes.Name).Value,
+                    PhotoPath = photoPath
+
+                };
+
+                Debug.WriteLine(experience.Recommendation);
+
+                var updateExperience = _experienceRepository.UpdateExperience(experience);
+                return RedirectToAction("details", new { experienceID = updateExperience.ExperienceID });
+            }
+
             return View();
         }
 
@@ -179,6 +236,23 @@ namespace ProductExperiences.Controllers
             var experience = _experienceRepository.DeleteExperience(experienceID);
 
             return RedirectToAction("MyList", "Experience");
+        }
+
+        [NonAction]
+        public string SaveImageAndReturnUniqueFileName(IFormFile photo)
+        {
+            string uniqueFileName = null;
+
+            if (photo != null)
+            {
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images/products");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                photo.CopyTo(new FileStream(filePath, FileMode.Create));
+
+            }
+
+            return uniqueFileName;
         }
 
         

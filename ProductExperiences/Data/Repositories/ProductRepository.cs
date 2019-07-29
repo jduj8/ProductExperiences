@@ -50,5 +50,17 @@ namespace ProductExperiences.Data.Repositories
             return _context.Products.Where(p => p.Category.ToString() == category);
         }
 
+        public Product GetProductUsingNameAndCategory(string productName, Category category)
+        {
+            foreach (Product product in _context.Products)
+            {
+                if (product.ProductName.ToLower() == productName.ToLower() && product.Category == category)
+                {
+                    return product;
+                }
+            }
+
+            return null;
+        }
     }
 }

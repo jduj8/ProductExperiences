@@ -69,3 +69,9 @@
         border-color:green;
 }
 
+.page-content {
+    margin-top: 31px;
+    background-color: whitesmoke;
+    font-family:'Berlin Sans FB';
+}
+

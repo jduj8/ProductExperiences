@@ -10,9 +10,11 @@
 <h2 class="page-header">Korisnička iskustva iz kategorije: <span style="color:blue; font-family:Dubai">@category</span></h2>
 
 
-@{
-    foreach (var experience in Model.Experiences)
-    {
-        @Html.Partial("ExperiencesSummary", experience)
+<div class="row">
+    @{
+        foreach (var experience in Model.Experiences)
+        {
+            @Html.Partial("ExperiencesSummary", experience)
+        }
     }
-}
+</div>

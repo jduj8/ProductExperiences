@@ -4,6 +4,9 @@
     ViewData["Title"] = "Create experience";
 }
 
+<h2>Podijeli svoje iskustvo s određenim proizvodom</h2>
+<hr />
+
 <form enctype="multipart/form-data" asp-controller="experience" asp-action="create" method="post" class="mt-3" style="margin:31px;">
     <div class="form-group row">
         <label asp-for="ProductName" class="col-sm-2 col-form-label">Naziv proizvoda:</label>
@@ -51,6 +54,7 @@
         </div>
     </div>
 
+    <hr />
     <div class="form-group row">
 
         <div class="text-center">
@@ -61,10 +65,10 @@
             <input id="uploadFile" class="form-control" style="max-width:40%;margin-left:30%;" placeholder="Odabrana slika" disabled="disabled" />
         </div>
     </div>
-
+    <hr />
     <div class="form-group row">
         <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Kreiraj iskustvo</button>
         </div>
     </div>
 

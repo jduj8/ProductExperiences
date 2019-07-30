@@ -65,6 +65,8 @@ namespace ProductExperiences
                    template: "Experience/Details/{experienceID?}",
                    defaults: new { Controller = "Experience", action = "Details" });
 
+               
+
                 routes.MapRoute(
                     name: "categoryfilter",
                     template: "Experience/{action}/{category?}",

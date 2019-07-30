@@ -147,6 +147,53 @@ namespace ProductExperiences.Controllers
 
         [HttpGet]
         [Authorize]
+        public ViewResult CreateFor(int productID)
+        {
+            Product product = _productRepository.GetProduct(productID);
+
+            ExperienceCreateForExistingProductViewModel experienceCreateVM = new ExperienceCreateForExistingProductViewModel
+            {
+                ProductName = product.ProductName,
+                Category = product.Category             
+            };
+
+            TempData["ProductID"] = productID;
+
+            return View(experienceCreateVM);
+        
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult CreateFor(ExperienceCreateForExistingProductViewModel experienceCreateVM)
+        {
+
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo);
+
+                var product = _productRepository.GetProduct(int.Parse(TempData["ProductID"].ToString()));
+
+                var experience = new Experience
+                {
+                    ProductID = product.ProductID,
+                    Evaluation = experienceCreateVM.Evaluation,
+                    Describe = experienceCreateVM.Describe,
+                    Recommendation = experienceCreateVM.Recommendation,
+                    UserName = User.FindFirst(ClaimTypes.Name).Value,
+                    PhotoPath = uniqueFileName
+
+                };
+
+                var addedExperience = _experienceRepository.AddExperience(experience);
+                return RedirectToAction("details", new { experienceID = addedExperience.ExperienceID });
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
         public ViewResult InitialCreate()
         {
             return View();
@@ -166,6 +213,7 @@ namespace ProductExperiences.Controllers
         {
             Experience experience = _experienceRepository.GetExperience(experienceID);
 
+
             ExperienceEditViewModel experienceEditVM = new ExperienceEditViewModel
             {
                 ExperienceID = experience.ExperienceID,
@@ -174,11 +222,8 @@ namespace ProductExperiences.Controllers
                 Evaluation = experience.Evaluation,
                 Describe = experience.Describe,
                 Recommendation = experience.Recommendation,
-                ExistingPhotoPath = experience.PhotoPath
-                
-
+                ExistingPhotoPath = experience.PhotoPath              
             };
-
 
             return View(experienceEditVM);
         }
@@ -187,6 +232,7 @@ namespace ProductExperiences.Controllers
         [Authorize]
         public IActionResult Edit(ExperienceEditViewModel experienceEditVM)
         {
+            Debug.WriteLine(experienceEditVM.ProductName);
             if (ModelState.IsValid)
             {
 

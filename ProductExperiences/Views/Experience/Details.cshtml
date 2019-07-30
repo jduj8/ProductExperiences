@@ -19,7 +19,8 @@
         <hr />
         <a class="btn btn-primary"
            asp-controller="Experience"
-           asp-action="Create"
+           asp-action="CreateFor"
+           asp-route-productID ="@Model.Product.ProductID"
         >
             Podijeli svoje iskustvo s ovim proizvodom
         </a>

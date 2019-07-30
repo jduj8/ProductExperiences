@@ -1,0 +1,90 @@
+﻿@model ExperienceCreateForExistingProductViewModel
+
+@{
+    ViewData["Title"] = "Create experience for existing product";
+    var productID = ViewBag.ProductID;
+}
+
+<form enctype="multipart/form-data" asp-controller="experience" asp-action="createfor" method="post" class="mt-3" style="margin:31px;">
+    <div class="form-group row">
+        <label asp-for="ProductName" class="col-sm-2 col-form-label">Naziv proizvoda:</label>
+        <div class="col-sm-10">
+            <input asp-for="ProductName" id="txtProductName" disabled class="form-control" placeholder="Name">
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Category" class="col-sm-2 col-form-label">Kategorija:</label>
+        <div class="col-sm-10">
+            <select asp-for="Category" disabled class="custom-select mr-sm-2"
+                    asp-items="Html.GetEnumSelectList<Category>()"
+                    >
+                <option>Please select</option>
+            </select>
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Evaluation" class="col-sm-2 col-form-label">Ocjena proizvoda:</label>
+        <div class="col-sm-10">
+            <input asp-for="Evaluation" value="" class="form-control" placeholder="Ocjena 1-10">
+            <span asp-validation-for="Evaluation" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Describe" class="col-sm-2 col-form-label">Moj dojam o proizvodu:</label>
+        <div class="col-sm-10">
+            <textarea asp-for="Describe" class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" placeholder="Podijeli svoje iskustvo..."></textarea>
+            <span asp-validation-for="Describe" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Recommendation" class="col-sm-2 col-form-label">Preporuka:</label>
+        <div class="col-sm-10">
+            <select asp-for="Recommendation" class="btn btn-default"
+                    asp-items="Html.GetEnumSelectList<Recommendation>()">
+                <option value="">Odaberi</option>
+            </select>
+            <span asp-validation-for="Recommendation" class="text-danger"></span>
+        </div>
+    </div>
+
+    <hr />
+    <div class="form-group row">
+        <div class="text-center">
+            <div class="fileUpload btn btn-default">
+                <span>Učitaj sliku proizvoda</span>
+                <input id="uploadBtn" asp-for="Photo" accept=".png,.jpg,.jpeg,.gif" asp- type="file" class="upload" />
+            </div>
+            <input id="uploadFile" class="form-control" style="max-width:40%;margin-left:30%;" placeholder="Odabrana slika" disabled="disabled" />
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Kreiraj iskustvo</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {         
+            
+        });
+        
+        document.getElementById("uploadBtn").onchange = function () {
+                document.getElementById("uploadFile").value = this.value.split("\\").pop();
+            };
+
+    
+
+    </script>
+
+}

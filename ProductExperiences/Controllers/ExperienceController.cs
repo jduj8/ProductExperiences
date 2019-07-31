@@ -280,6 +280,27 @@ namespace ProductExperiences.Controllers
             return RedirectToAction("MyList", "Experience");
         }
 
+        public ViewResult Search(string searchTerm)
+        {
+            string _searchTerm = searchTerm;
+
+            IEnumerable<Experience> experiences;
+
+            string currentCategory = string.Empty;
+
+            if (string.IsNullOrEmpty(_searchTerm))
+            {
+                experiences = _experienceRepository.GetAllExperiences().OrderByDescending(e => e.Date);
+            }
+
+            else
+            {
+                experiences = _experienceRepository.GetAllExperiences().Where(e => e.Product.ProductName.ToLower().Contains(_searchTerm.ToString().ToLower())).OrderByDescending(e =>e.Date);
+            }
+
+            return View("~/Views/Experience/List.cshtml", new ExperienceListViewModel { Experiences = experiences, Category = "Sva iskustva" });
+        }
+
         [NonAction]
         public string SaveImageAndReturnUniqueFileName(IFormFile photo)
         {

@@ -42,9 +42,29 @@
                         <li><a asp-area="" asp-controller="Experience" asp-action="MyList">Moja iskustva</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>
+                        <li>
+                            <form class="navbar-form navbar-right" asp-controller="Experience" asp-action="Search" method="get">
+                                <div class="row">
+                                    <div class="col-xs-2 col-md-2">
+                                        <div class="input-group">
+                                            <input style="min-width:184px;" type="text" class="form-control" name="searchTerm" value="@ViewData["searchTerm"]" placeholder="Traži po imenu proizvoda" id="txtSearch" />
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-info" type="submit">
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
 
+                        </li>
                     </ul>
                     @await Html.PartialAsync("LoginPartial")
+
+
 
                 </div>
             </div>

@@ -16,31 +16,35 @@
     }
 }
 
+
 <div class="col-sm-4">
     <div class="thumbnail" style="background-color:white; margin-top:10px; border-color:gray; border-width:medium">
         <img style="border:solid; border-color:lightgray;" width="350" height="350" src="~/images/products/@(Model.PhotoPath ?? "noImage.png")" alt="" />
-        <div class="caption">         
+        <div class="caption">
             <h4 class="panel-heading control-label">
                 @productName
             </h4>
         </div>
 
-        <div style="display:inline-block">
-            <div class="text-left" style="display:inline-block;">
-                <img style="vertical-align:middle" src="~/images/star.png" alt="">
-                <span style="vertical-align:middle"> @Model.Evaluation/10</span>
-            </div>
-            <div class="text-right" style="display:inline-block; margin-left:200px;">
-                <p class="button">
-                    <a class="btn btn-success"
-                       asp-controller="Experience"
-                       asp-action="Details"
-                       asp-route-experienceID="@Model.ExperienceID">
-                        Detalji
-                    </a>
-                </p>
-            </div>
+
+        <div class="text-right">
+
+           <img  src="~/images/star.png" alt="">
+
+           <p style="display:inline"> @Model.Evaluation/10</p>
+       
+            <a class="btn btn-success"
+                   asp-controller="Experience"
+                   asp-action="Details"
+                   asp-route-experienceID="@Model.ExperienceID">
+                    Detalji
+            </a>
+                       
         </div>
+
+
+        <p class="text-center" style="font-size:smaller; margin-top:5px; color:darkgray;">@Model.Date.ToString("dd MMM yyyy hh:mm")</p>
+
     </div>
 </div>
 

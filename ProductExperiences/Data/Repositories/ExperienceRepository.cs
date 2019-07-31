@@ -20,6 +20,7 @@ namespace ProductExperiences.Data.Repositories
 
         public Experience AddExperience(Experience experience)
         {
+            experience.Date = DateTime.Today.Date;
             _context.Experiences.Add(experience);
             _context.SaveChanges();
             return experience;

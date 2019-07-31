@@ -125,7 +125,7 @@ namespace ProductExperiences.Controllers
                 var addedProduct = _productRepository.AddProduct(product);
 
                 string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo);
-                
+
 
                 var experience = new Experience
                 {
@@ -134,9 +134,12 @@ namespace ProductExperiences.Controllers
                     Describe = experienceCreateVM.Describe,
                     Recommendation = experienceCreateVM.Recommendation,
                     UserName = User.FindFirst(ClaimTypes.Name).Value,
-                    PhotoPath = uniqueFileName
+                    PhotoPath = uniqueFileName,
+                    Date = DateTime.Now
                     
                 };
+
+                Debug.WriteLine(experience.Date.ToString("yyyy/mm/dd hh:mm"));
 
                 var addedExperience = _experienceRepository.AddExperience(experience);
                 return RedirectToAction("details", new { experienceID = addedExperience.ExperienceID });
@@ -181,7 +184,8 @@ namespace ProductExperiences.Controllers
                     Describe = experienceCreateVM.Describe,
                     Recommendation = experienceCreateVM.Recommendation,
                     UserName = User.FindFirst(ClaimTypes.Name).Value,
-                    PhotoPath = uniqueFileName
+                    PhotoPath = uniqueFileName,
+                    Date = DateTime.Now
 
                 };
 
@@ -189,13 +193,6 @@ namespace ProductExperiences.Controllers
                 return RedirectToAction("details", new { experienceID = addedExperience.ExperienceID });
             }
 
-            return View();
-        }
-
-        [HttpGet]
-        [Authorize]
-        public ViewResult InitialCreate()
-        {
             return View();
         }
 
@@ -232,7 +229,6 @@ namespace ProductExperiences.Controllers
         [Authorize]
         public IActionResult Edit(ExperienceEditViewModel experienceEditVM)
         {
-            Debug.WriteLine(experienceEditVM.ProductName);
             if (ModelState.IsValid)
             {
 
@@ -262,11 +258,11 @@ namespace ProductExperiences.Controllers
                     Describe = experienceEditVM.Describe,
                     Recommendation = experienceEditVM.Recommendation,
                     UserName = User.FindFirst(ClaimTypes.Name).Value,
-                    PhotoPath = photoPath
+                    PhotoPath = photoPath,
+                    Date = DateTime.Now
 
                 };
 
-                Debug.WriteLine(experience.Recommendation);
 
                 var updateExperience = _experienceRepository.UpdateExperience(experience);
                 return RedirectToAction("details", new { experienceID = updateExperience.ExperienceID });

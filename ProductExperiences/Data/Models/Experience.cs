@@ -27,6 +27,8 @@ namespace ProductExperiences.Data.Models
         [MinLength(4, ErrorMessage = "Korisničko ime mora sadržavati najmanje 4 znaka")]
         public string UserName { get; set; }
 
+        public DateTime Date { get; set; }
+
         public string PhotoPath { get; set; }
 
         public virtual Product Product { get; set; }

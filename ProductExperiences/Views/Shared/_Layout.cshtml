@@ -43,11 +43,11 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>
                         <li>
-                            <form class="navbar-form navbar-right" asp-controller="Experience" asp-action="Search" method="get">
+                            <form class="navbar-form navbar-right" asp-controller="Experience" asp-action="Index" asp-route-searchTerm="@ViewData["searchTerm"]" asp-route-category="Sve kategorije" method="get">
                                 <div class="row">
                                     <div class="col-xs-2 col-md-2">
                                         <div class="input-group">
-                                            <input style="min-width:184px;" type="text" class="form-control" name="searchTerm" value="@ViewData["searchTerm"]" placeholder="Traži po imenu proizvoda" id="txtSearch" />
+                                            <input style="min-width:184px;" type="text" class="form-control"  name="searchTerm" value="@ViewData["searchTerm"]" placeholder="Traži po imenu proizvoda" id="txtSearch" />
                                             <div class="input-group-btn">
                                                 <button class="btn btn-info" type="submit">
                                                     <span class="glyphicon glyphicon-search"></span>
@@ -57,6 +57,10 @@
                                     </div>
                                 </div>
                             </form>
+
+               
+
+
                         </li>
                         <li>
 

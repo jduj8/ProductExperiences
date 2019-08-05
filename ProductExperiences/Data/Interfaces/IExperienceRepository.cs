@@ -11,6 +11,7 @@ namespace ProductExperiences.Data.Interfaces
         Experience GetExperience(int experienceID);
         IEnumerable<Experience> GetAllExperiences();
         IEnumerable<Experience> GetExperiencesWithProduct(int productID);
+        IEnumerable<Experience> GetExperiencesWithProductName(string term);
         IEnumerable<Experience> GetLastThreeExperiences();
         Experience AddExperience(Experience experience);
         Experience UpdateExperience(Experience experienceChanges);

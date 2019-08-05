@@ -10,9 +10,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PagedList;
+using PagedList.Mvc;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
+using ProductExperiences.Helpers;
 using ProductExperiences.ViewModels;
+using ReflectionIT.Mvc.Paging;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,38 +40,52 @@ namespace ProductExperiences.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string category, string searchTerm, int? pageNumber)
         {
-            return View();
-        }
-
-        public ViewResult List(string category)
-        {
-            string _category = category;
-
-            string currentCategory = string.Empty;
 
             IEnumerable<Experience> experiences = new List<Experience>();
 
-            if (string.IsNullOrEmpty(category))
+            IOrderedQueryable<Experience> query;
+
+            if (string.IsNullOrEmpty(searchTerm))
             {
-                experiences = _experienceRepository.GetAllExperiences();
+
+
+                if (string.IsNullOrEmpty(category) || category == "Sve kategorije")
+                {
+                    query = _experienceRepository.GetAllExperiences().AsQueryable().OrderByDescending(e => e.Date);
+
+                }
+
+                else
+                {
+                    query = _experienceRepository.GetExperiencesFromCategory(category).AsQueryable().OrderByDescending(e => e.Date);
+                }
             }
 
             else
             {
-                experiences = _experienceRepository.GetExperiencesFromCategory(category);
+                
+                query = _experienceRepository.GetExperiencesWithProductName(searchTerm).AsQueryable().OrderByDescending(e => e.Date);
+                
+            }
+
+            if (string.IsNullOrEmpty(category))
+            {
+                ViewData["category"] = "Sve kategorije";
+            }
+
+            else
+            {
+                ViewData["category"] = category;
             }
             
-
-            var experienceListVM = new ExperienceListViewModel()
-            {
-                Experiences = experiences,
-                Category = category
-            };
-            //var experiences = _experienceRepository.GetAllExperiences();
-            return View(experienceListVM);
+            ViewData["searchTerm"] = searchTerm;
+            int pageSize = 3;
+            var model = await PaginatedList<Experience>.CreateAsync(query, pageNumber ?? 1, pageSize);
+            return View(model);
         }
+
 
         public ViewResult Details(int experienceID)
         {
@@ -74,34 +93,6 @@ namespace ProductExperiences.Controllers
             return View(experience);
         }
 
-        /*
-        public string AddData()
-        {
-
-
-            Product product4 = new Product
-            {
-                ProductName = "Samsung A6 2018",
-                Category = Category.Informatika
-            };
-
-            var product = _productRepository.AddProduct(product4);
-
-            Experience experience = new Experience
-            {
-                Describe = "Kao prednosti mobitela naveo bih moderan dizajn i kvalitetu izrade, solidan zaslon, pristojne performanse, brzo punjenje baterije. Negativne strane uređaja: nema led obavijesti ni always ON prikaz, čitač ostisaka preblizu kamere i stariji mikro USB",
-                ProductID = product.ProductID,
-                Evaluation = 7,
-                Recommendation = Recommendation.Možda,
-                Email = "ppetrovic@gmail.com",
-                PhotoPath = "~/images/products/samsung_A6_2018.jpg"
-            };
-
-            _experienceRepository.AddExperience(experience);
-
-            return "adding data to DB";
-        }
-        */
 
         [HttpGet]
         [Authorize]
@@ -280,27 +271,7 @@ namespace ProductExperiences.Controllers
             return RedirectToAction("MyList", "Experience");
         }
 
-        public ViewResult Search(string searchTerm)
-        {
-            string _searchTerm = searchTerm;
-
-            IEnumerable<Experience> experiences;
-
-            string currentCategory = string.Empty;
-
-            if (string.IsNullOrEmpty(_searchTerm))
-            {
-                experiences = _experienceRepository.GetAllExperiences().OrderByDescending(e => e.Date);
-            }
-
-            else
-            {
-                experiences = _experienceRepository.GetAllExperiences().Where(e => e.Product.ProductName.ToLower().Contains(_searchTerm.ToString().ToLower())).OrderByDescending(e =>e.Date);
-            }
-
-            return View("~/Views/Experience/List.cshtml", new ExperienceListViewModel { Experiences = experiences, Category = "Sva iskustva" });
-        }
-
+        
         [NonAction]
         public string SaveImageAndReturnUniqueFileName(IFormFile photo)
         {

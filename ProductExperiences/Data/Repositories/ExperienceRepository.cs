@@ -46,6 +46,7 @@ namespace ProductExperiences.Data.Repositories
             return _context.Experiences.Include(p => p.Product);
         }
 
+
         public Experience GetExperience(int experienceID)
         {
             var experience = _context.Experiences.Include(p => p.Product).FirstOrDefault(e => e.ExperienceID == experienceID);
@@ -69,10 +70,16 @@ namespace ProductExperiences.Data.Repositories
 
         }
 
+        public IEnumerable<Experience> GetExperiencesWithProductName(string term)
+        {
+            return _context.Experiences.Include(p => p.Product).Where(e => e.Product.ProductName.ToLower().Contains(term.ToLower()));
+        }
+
         public IEnumerable<Experience> GetLastThreeExperiences()
         {
             throw new NotImplementedException();
         }
+
 
         public Experience UpdateExperience(Experience experienceChanges)
         {

@@ -12,6 +12,7 @@ using ProductExperiences.Data;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Mocks;
 using ProductExperiences.Data.Repositories;
+using ReflectionIT.Mvc.Paging;
 
 namespace ProductExperiences
 {
@@ -37,6 +38,8 @@ namespace ProductExperiences
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IExperienceRepository, ExperienceRepository>();
+
+            services.AddPaging();
             services.AddMvc();
         }
 
@@ -65,7 +68,11 @@ namespace ProductExperiences
                    template: "Experience/Details/{experienceID?}",
                    defaults: new { Controller = "Experience", action = "Details" });
 
-               
+                routes.MapRoute(
+                    name: "paging",
+                    template: "Experience/List/{page?}",
+                    defaults: new { Controller = "Experience", action = "List" }
+                    );
 
                 routes.MapRoute(
                     name: "categoryfilter",

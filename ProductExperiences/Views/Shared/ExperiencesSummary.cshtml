@@ -1,7 +1,16 @@
 ﻿@model Experience
 
 @{
-    var photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
+    var photoPath = "";
+    if (Model.PhotoPath != null)
+    {
+        photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
+    }
+
+    else
+    {
+        photoPath = "~/images/products/noImage.png";
+    }
     var photoTest = "~/images/products/noImage.png";
     var productName = "";
     if (Model.Product.ProductName.Length > 30)

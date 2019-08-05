@@ -22,7 +22,7 @@ namespace ProductExperiences.Controllers
 
         public IActionResult Index()
         {
-            var experiences = _experienceRepository.GetAllExperiences();
+            var experiences = _experienceRepository.GetAllExperiences().Take(3);
             return View(experiences);
         }
 

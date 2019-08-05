@@ -1,0 +1,65 @@
+﻿@model PaginatedList<Experience>
+
+
+
+@{
+    ViewData["Title"] = "List of experiences";
+    var category = string.Empty;
+    //category = string.IsNullOrEmpty(ViewData["category"].ToString()) ? "Sve kategorije" : ViewData["category"].ToString();
+    category = ViewData["category"].ToString() ?? "Sve kategorije";
+
+    var message = Model.Count == 0 ? "Žao nam je, trenutno ne možemo pronaći iskustva iz postavljenog kriterija pretrage" : "";
+
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<h2 class="page-header">Korisnička iskustva iz kategorije: <span style="color:blue; font-family:Dubai">@category</span></h2>
+
+
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-category="@category"
+   asp-route-searchTerm = "@ViewData["searchTerm"]"
+   class="btn btn-default @prevDisabled">
+    <<
+</a>
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-category="@category"
+   asp-route-searchTerm = "@ViewData["searchTerm"]"
+   class="btn btn-default @nextDisabled">
+    >>
+</a>
+
+<hr />
+<p style="font-size:large; font-family:'Bookman Old Style';">@message</p>
+<div class="row">
+    @{
+        foreach (var experience in Model)
+        {
+            @Html.Partial("ExperiencesSummary", experience)
+        }
+    }
+</div>
+
+<hr />
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-category="@TempData["category"]"
+   asp-route-searchTerm = "@ViewData["searchTerm"]"
+   class="btn btn-default @prevDisabled">
+    <<
+</a>
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-category="@TempData["category"]"
+   asp-route-searchTerm = "@ViewData["searchTerm"]"
+   class="btn btn-default @nextDisabled">
+    >>
+</a>
+

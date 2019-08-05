@@ -83,6 +83,7 @@ namespace ProductExperiences.Data.Mocks
             return _experiences;
         }
 
+
         public Experience GetExperience(int experienceID)
         {
             Experience experience = _experiences.FirstOrDefault(e => e.ExperienceID == experienceID);
@@ -113,6 +114,11 @@ namespace ProductExperiences.Data.Mocks
             return experiences;
         }
 
+        public IEnumerable<Experience> GetExperiencesWithProductName(string term)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Experience> GetLastThreeExperiences()
         {
             List<Experience> ex = new List<Experience>();
@@ -128,6 +134,7 @@ namespace ProductExperiences.Data.Mocks
 
 
         }
+
 
         public Experience UpdateExperience(Experience experienceChanges)
         {

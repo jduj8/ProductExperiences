@@ -18,6 +18,10 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <link href="~/css/FooterBottom.css" rel="stylesheet" />
     </environment>
 </head>
 <body>
@@ -37,7 +41,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav" style="margin-top:10px; font-size:medium;">
-                        @await Component.InvokeAsync("CategoryMenu")
+                        <li style="border-right:1px solid;">@await Component.InvokeAsync("CategoryMenu")</li>
                         <li><a asp-area="" asp-controller="Experience" asp-action="Create">Podijeli iskustvo</a></li>
                         <li><a asp-area="" asp-controller="Experience" asp-action="MyList">Moja iskustva</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a></li>
@@ -57,10 +61,6 @@
                                     </div>
                                 </div>
                             </form>
-
-               
-
-
                         </li>
                         <li>
 

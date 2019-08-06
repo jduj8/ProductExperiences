@@ -43,18 +43,13 @@ namespace ProductExperiences.Controllers
         public async Task<IActionResult> Index(string category, string searchTerm, int? pageNumber)
         {
 
-            IEnumerable<Experience> experiences = new List<Experience>();
-
             IOrderedQueryable<Experience> query;
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-
-
                 if (string.IsNullOrEmpty(category) || category == "Sve kategorije")
                 {
                     query = _experienceRepository.GetAllExperiences().AsQueryable().OrderByDescending(e => e.Date);
-
                 }
 
                 else
@@ -64,25 +59,16 @@ namespace ProductExperiences.Controllers
             }
 
             else
-            {
-                
-                query = _experienceRepository.GetExperiencesWithProductName(searchTerm).AsQueryable().OrderByDescending(e => e.Date);
-                
+            {               
+                query = _experienceRepository.GetExperiencesWithProductName(searchTerm).AsQueryable().OrderByDescending(e => e.Date);                
             }
 
-            if (string.IsNullOrEmpty(category))
-            {
-                ViewData["category"] = "Sve kategorije";
-            }
-
-            else
-            {
-                ViewData["category"] = category;
-            }
-            
+            ViewData["category"] = string.IsNullOrEmpty(category) ? "Sve kategorije" : category;                     
             ViewData["searchTerm"] = searchTerm;
-            int pageSize = 3;
+
+            int pageSize = 6;
             var model = await PaginatedList<Experience>.CreateAsync(query, pageNumber ?? 1, pageSize);
+
             return View(model);
         }
 

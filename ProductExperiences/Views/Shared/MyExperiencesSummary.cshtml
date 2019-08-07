@@ -1,7 +1,16 @@
 ﻿@model Experience
 
 @{
-    var photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
+    var photoPath = "";
+    if (Model.PhotoPath != null)
+    {
+        photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
+    }
+
+    else
+    {
+        photoPath = "~/images/products/noImage.png";
+    }
     var productName = "";
     if (Model.Product.ProductName.Length > 30)
     {
@@ -15,35 +24,32 @@
     }
 }
 
-<div class="col-sm-4">
-    <div class="thumbnail" style="background-color:white; margin-top:10px; border-color:gray; border-width:medium">
-        <img style="border:solid; border-color:lightgray;" width="350" height="350" src="~/images/products/@(Model.PhotoPath ?? "noImage.png")" alt="" />
-        <div class="caption">
-            <h4 class="panel-heading control-label">
-                @productName
-            </h4>
+<div class="col-sm-4 col-lg-4 col-md-4">
+
+    <div class="thumbnail">
+        <div class="text-center">
+            <h4>@productName</h4>
         </div>
 
-
-        <div style="display:inline;">
-
-            <div class="text-right">
-
-                <a class="btn btn-warning"
-                   asp-controller="Experience"
-                   asp-action="Edit"
-                   asp-route-experienceID="@Model.ExperienceID">
-                    Ažuriraj
-                </a>
-
-                <form style="display:inline" asp-action="Delete" asp-controller="Experience" method="post" asp-route-experienceID="@Model.ExperienceID">
-                    <button onclick = "return confirm('Jeste li sigurni da želite obrisati podijeljeno iskustvo za proizvod @Model.Product.ProductName?');" class="btn btn-danger">Briši</button>
-                </form>
-            </div>
+        <img style="height:150px; margin-bottom:10px;" src="~/images/products/@(Model.PhotoPath ?? "noImage.png")" class="img-responsive" alt="" />
+        <div style="display:inline;" class="caption">
+            <img style="display:inline;" src="~/images/star.png" alt="">
+            <p style="display:inline"> @Model.Evaluation/10</p>
+            <p class="pull-right" style="display:inline;font-size:smaller;">@Model.Date.ToString("dd MMM yyyy hh:mm")</p>
         </div>
-        
-       
-        <p class="text-center" style="font-size:smaller; margin-top:5px; color:darkgray;">@Model.Date.ToString("dd MMM yyyy hh:mm")</p>
-        
+        <hr />
+        <div class="text-right" style="margin-bottom:10px;">
+            <a class="btn btn-warning"
+               asp-controller="Experience"
+               asp-action="Edit"
+               asp-route-experienceID="@Model.ExperienceID">
+                Ažuriraj
+            </a>
+
+            <form style="display:inline" asp-action="Delete" asp-controller="Experience" method="post" asp-route-experienceID="@Model.ExperienceID">
+                <button onclick="return confirm('Jeste li sigurni da želite obrisati podijeljeno iskustvo za proizvod @Model.Product.ProductName?');" class="btn btn-danger">Briši</button>
+            </form>
+
+        </div>
     </div>
 </div>

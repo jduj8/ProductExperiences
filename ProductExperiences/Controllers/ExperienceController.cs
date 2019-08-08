@@ -77,7 +77,21 @@ namespace ProductExperiences.Controllers
         public ViewResult Details(int experienceID)
         {
             var experience = _experienceRepository.GetExperience(experienceID);
-            return View(experience);
+            var average = _experienceRepository.GetExperiencesWithProduct(experience.ProductID).Average(e => e.Evaluation);
+            var numbersOfRecommendations = _experienceRepository.GetExperiencesWithProduct(experience.ProductID).Where(e => e.Recommendation.ToString() == "Da").Count();
+            var totalExperiences = _experienceRepository.GetExperiencesWithProduct(experience.ProductID).Count();
+
+            ExperienceDetailsViewModel experienceDetailsVM = new ExperienceDetailsViewModel
+            {
+                Experience = experience,
+                AverageEvaluation = average,
+                NumberOfRecommendations = numbersOfRecommendations,
+                TotalExperiences = totalExperiences
+            };
+
+            
+            ViewBag.Average = average;
+            return View(experienceDetailsVM);
         }
 
 
@@ -128,9 +142,21 @@ namespace ProductExperiences.Controllers
 
         [HttpGet]
         [Authorize]
-        public ViewResult CreateFor(int productID)
+        public IActionResult CreateFor(int productID)
         {
             Product product = _productRepository.GetProduct(productID);
+
+            var checkExist = _experienceRepository.GetAllExperiences().Where(
+                e => e.ProductID == productID  && 
+                e.UserName == User.FindFirst(ClaimTypes.Name).Value &&
+                e.Product.Category.ToString() == product.Category.ToString()
+                );
+
+          
+            if (checkExist.Count() > 0)
+            {
+                return RedirectToAction("Edit", new { experienceID = checkExist.ElementAt(0).ExperienceID });
+            }
 
             ExperienceCreateForExistingProductViewModel experienceCreateVM = new ExperienceCreateForExistingProductViewModel
             {

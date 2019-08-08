@@ -1,56 +1,62 @@
-﻿@model Experience
+﻿@model ExperienceDetailsViewModel
 
 
 @{
     ViewData["Title"] = "Details of experience";
-    var photoPath = "~/Images/Products/" + (Model.PhotoPath ?? "noImage.png");
+    var photoPath = "~/Images/Products/" + (Model.Experience.PhotoPath ?? "noImage.png");
 
     string showUser;
     bool hideCreate;
     string showingText;
-    if (User.FindFirst(ClaimTypes.Name).Value != null)
+    if (User.Identity.IsAuthenticated)
     {
-        showUser = User.FindFirst(ClaimTypes.Name).Value == Model.UserName ? "Vi" : Model.UserName;
-        hideCreate = User.FindFirst(ClaimTypes.Name).Value == Model.UserName;
-        showingText = User.FindFirst(ClaimTypes.Name).Value == Model.UserName ? "Vaše iskustvo s ovim proizvodom:" : "Iskustvo korisnika " + Model.UserName + " s ovim proizvodom:";
-
+        showUser = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName ? "Vi" : Model.Experience.UserName;
+        hideCreate = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName;
+        showingText = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName ? "Vaše iskustvo s ovim proizvodom:" : "Iskustvo korisnika " + Model.Experience.UserName + " s ovim proizvodom:";
+         
     }
 
     else
     {
-        showUser = Model.UserName;
+        showUser = Model.Experience.UserName;
         hideCreate = false;
-        showingText = "Iskustvo korisnika " + Model.UserName + " s ovim proizvodom:";
+        showingText = "Iskustvo korisnika " + Model.Experience.UserName + " s ovim proizvodom:";
     }
+
+    string messageForTotal = Model.TotalExperiences != 1 ? "Ukupno " + Model.TotalExperiences + " korisnika je podijelilo iskustvo s ovim proizvodom" :
+                                                            "1 korisnik je podijelio iskustvo s ovim proizvodom";
 
 }
 
 <div class="text-center">
-    <h2>@Model.Product.ProductName</h2>
+    <h2>@Model.Experience.Product.ProductName</h2>
     <img style="max-width:500px; max-height:500px;" class="card-img-top" src="@photoPath" asp-append-version="true" />
     <div class="text-left">
         <hr />
         <div style="border:inset; padding:2px; margin-top:5px;">
-            
+
             <label class="text-muted">@showingText</label>
-            <p>@Model.Describe</p>
+            <p class="text-info">@Model.Experience.Describe</p>
         </div>
         <hr />
-        <h4>Ocjena: @Model.Evaluation</h4>
-        <h4>Preporuka: @Model.Recommendation</h4>
+        <h4 class="text-info">Ocjena: <span style="color:blue;"> @Model.Experience.Evaluation / 10</span></h4>
+        <h4 class="text-info">Prosječna ocjena: <span style="color:cornflowerblue;"> @Model.AverageEvaluation / 10</span></h4>
+        <h4 class="text-info">Preporuka: <span style="color:blue;"> @Model.Experience.Recommendation </span></h4>
+        <h4 class="text-info"><span style="color:cornflowerblue">@Model.NumberOfRecommendations</span> od <span style="color:cornflowerblue">@Model.TotalExperiences</span> korisnika preporučuje ovaj proizvod</h4>
         <hr />
-        
-        @if (!hideCreate)
-        {
-            <a class="btn btn-primary"
-               asp-controller="Experience"
-               asp-action="CreateFor"
-               asp-route-productID ="@Model.Product.ProductID"
-            >
 
-                Podijeli svoje iskustvo s ovim proizvodom
-            </a>
-        }
+
+        @if (!hideCreate)
+    {
+        <h4 class="text-info">@messageForTotal</h4>
+        <a class="btn btn-primary"
+           asp-controller="Experience"
+           asp-action="CreateFor"
+           asp-route-productID="@Model.Experience.Product.ProductID">
+
+            Podijeli svoje iskustvo s ovim proizvodom
+        </a>
+}
 
     </div>
 </div>

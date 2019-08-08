@@ -4,26 +4,54 @@
 @{
     ViewData["Title"] = "Details of experience";
     var photoPath = "~/Images/Products/" + (Model.PhotoPath ?? "noImage.png");
+
+    string showUser;
+    bool hideCreate;
+    string showingText;
+    if (User.FindFirst(ClaimTypes.Name).Value != null)
+    {
+        showUser = User.FindFirst(ClaimTypes.Name).Value == Model.UserName ? "Vi" : Model.UserName;
+        hideCreate = User.FindFirst(ClaimTypes.Name).Value == Model.UserName;
+        showingText = User.FindFirst(ClaimTypes.Name).Value == Model.UserName ? "Vaše iskustvo s ovim proizvodom:" : "Iskustvo korisnika " + Model.UserName + " s ovim proizvodom:";
+
+    }
+
+    else
+    {
+        showUser = Model.UserName;
+        hideCreate = false;
+        showingText = "Iskustvo korisnika " + Model.UserName + " s ovim proizvodom:";
+    }
+
 }
 
 <div class="text-center">
     <h2>@Model.Product.ProductName</h2>
-    <img width="350" height="350" class="card-img-top" src="@photoPath" asp-append-version="true" />
+    <img style="max-width:500px; max-height:500px;" class="card-img-top" src="@photoPath" asp-append-version="true" />
     <div class="text-left">
+        <hr />
         <div style="border:inset; padding:2px; margin-top:5px;">
-            <label class="text-muted">Korisničko iskustvo s ovim proizvodom:</label>
+            
+            <label class="text-muted">@showingText</label>
             <p>@Model.Describe</p>
         </div>
+        <hr />
         <h4>Ocjena: @Model.Evaluation</h4>
         <h4>Preporuka: @Model.Recommendation</h4>
         <hr />
-        <a class="btn btn-primary"
-           asp-controller="Experience"
-           asp-action="CreateFor"
-           asp-route-productID ="@Model.Product.ProductID"
-        >
-            Podijeli svoje iskustvo s ovim proizvodom
-        </a>
+        
+        @if (!hideCreate)
+        {
+            <a class="btn btn-primary"
+               asp-controller="Experience"
+               asp-action="CreateFor"
+               asp-route-productID ="@Model.Product.ProductID"
+            >
+
+                Podijeli svoje iskustvo s ovim proizvodom
+            </a>
+        }
+
     </div>
 </div>
 

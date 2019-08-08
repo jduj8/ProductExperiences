@@ -40,6 +40,7 @@ namespace ProductExperiences.Controllers
         }
 
         // GET: /<controller>/
+        [HttpGet]
         public async Task<IActionResult> Index(string category, string searchTerm, int? pageNumber)
         {
 
@@ -72,7 +73,7 @@ namespace ProductExperiences.Controllers
             return View(model);
         }
 
-
+        [HttpGet]
         public ViewResult Details(int experienceID)
         {
             var experience = _experienceRepository.GetExperience(experienceID);
@@ -174,6 +175,7 @@ namespace ProductExperiences.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ViewResult MyList()
         {
             IEnumerable<Experience> myExperiences = _experienceRepository.GetExperienceOfUser(User.FindFirst(ClaimTypes.Name).Value);

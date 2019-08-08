@@ -22,13 +22,13 @@ namespace ProductExperiences.Controllers
 
         public IActionResult Index()
         {
-            var experiences = _experienceRepository.GetAllExperiences().Take(3);
+            var experiences = _experienceRepository.GetAllExperiences().OrderByDescending(e => e.Date).Take(6);
             return View(experiences);
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "O stranici";
 
             return View();
         }

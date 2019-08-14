@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PagedList;
-using PagedList.Mvc;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
 using ProductExperiences.Helpers;

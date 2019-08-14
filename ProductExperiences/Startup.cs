@@ -36,6 +36,8 @@ namespace ProductExperiences
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
+
+
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IExperienceRepository, ExperienceRepository>();
 

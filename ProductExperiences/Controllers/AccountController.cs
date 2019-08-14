@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.ViewModels;
 
+using Microsoft.AspNetCore.Authorization;
+using ProductExperiences.Helpers;
+
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ProductExperiences.Controllers
@@ -36,6 +39,7 @@ namespace ProductExperiences.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel registerVM)
         {
 
@@ -49,8 +53,11 @@ namespace ProductExperiences.Controllers
 
                 var result = await _userManager.CreateAsync(user, registerVM.Password);
 
+                
                 if (result.Succeeded)
                 {
+                    await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirali u sustav," +
+                        " za sva dodatna pitanja slobodno nas kontaktirajte!");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }

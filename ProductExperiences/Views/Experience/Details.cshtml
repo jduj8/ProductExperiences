@@ -8,12 +8,15 @@
     string showUser;
     bool hideCreate;
     string showingText;
+    string gradeText;
+    string recommendationText;
     if (User.Identity.IsAuthenticated)
     {
         showUser = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName ? "Vi" : Model.Experience.UserName;
         hideCreate = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName;
         showingText = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName ? "Vaše iskustvo s ovim proizvodom:" : "Iskustvo korisnika " + Model.Experience.UserName + " s ovim proizvodom:";
-         
+        gradeText = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName ? "Vaša ocjena: " : "Ocjena korisnika " + Model.Experience.UserName + ": ";
+        recommendationText = User.FindFirst(ClaimTypes.Name).Value == Model.Experience.UserName ? "Vaša preporuka: " : "Preporuka korisnika " + Model.Experience.UserName + ": ";
     }
 
     else
@@ -21,6 +24,8 @@
         showUser = Model.Experience.UserName;
         hideCreate = false;
         showingText = "Iskustvo korisnika " + Model.Experience.UserName + " s ovim proizvodom:";
+        gradeText = "Ocjena korisnika " + Model.Experience.UserName + ": ";
+        recommendationText = "Preporuka korisnika " + Model.Experience.UserName + ": ";
     }
 
     string messageForTotal = Model.TotalExperiences != 1 ? "Ukupno " + Model.TotalExperiences + " korisnika je podijelilo iskustvo s ovim proizvodom" :
@@ -28,36 +33,44 @@
 
 }
 
-<div class="text-center">
-    <h2>@Model.Experience.Product.ProductName</h2>
-    <img style="max-width:500px; max-height:500px;" class="card-img-top" src="@photoPath" asp-append-version="true" />
-    <div class="text-left">
-        <hr />
-        <div style="border:inset; padding:2px; margin-top:5px;">
-
-            <label class="text-muted">@showingText</label>
-            <p class="text-info">@Model.Experience.Describe</p>
+<div class="row">
+    <h2 class="text-center">@Model.Experience.Product.ProductName</h2>
+    <hr />
+    <center>
+        <div style="max-width:300px;">
+            <img class="img-rounded" style="width:100%; max-height:300px;" src="@photoPath" asp-append-version="true" />
         </div>
-        <hr />
-        <h4 class="text-info">Ocjena: <span style="color:blue;"> @Model.Experience.Evaluation / 10</span></h4>
-        <h4 class="text-info">Prosječna ocjena: <span style="color:cornflowerblue;"> @Model.AverageEvaluation / 10</span></h4>
-        <h4 class="text-info">Preporuka: <span style="color:blue;"> @Model.Experience.Recommendation </span></h4>
+    </center>
+    <hr/>
+</div>
+<div class="row">
+    <label class="text-muted" style="margin-left:50px;">@showingText</label>
+    <div style="border:inset; min-height:80px; background-color:white; padding:2px; margin-left:50px; margin-right:50px;">
+        <p class="text-info">@Model.Experience.Describe</p>
+    </div>
+    <hr />
+    <div style="margin-left:15px;">
+        <h4 class="text-info">@gradeText <span style="color:blue;"> @Model.Experience.Evaluation / 10</span></h4>
+        <h4 class="text-info">Prosječna ocjena: <span style="color:cornflowerblue;"> @Model.AverageEvaluation</span></h4>
+        <h4 class="text-info">@recommendationText <span style="color:blue;"> @Model.Experience.Recommendation </span></h4>
         <h4 class="text-info"><span style="color:cornflowerblue">@Model.NumberOfRecommendations</span> od <span style="color:cornflowerblue">@Model.TotalExperiences</span> korisnika preporučuje ovaj proizvod</h4>
         <hr />
-
-
         @if (!hideCreate)
-    {
-        <h4 class="text-info">@messageForTotal</h4>
-        <a class="btn btn-primary"
-           asp-controller="Experience"
-           asp-action="CreateFor"
-           asp-route-productID="@Model.Experience.Product.ProductID">
+        {
+            <h4 class="text-info">@messageForTotal</h4>
+            <p class="text-info">Imate li vi iskustva s ovim proizvodom?</p>
+            <a class="btn btn-primary"
+               asp-controller="Experience"
+               asp-action="CreateFor"
+               asp-route-productID="@Model.Experience.Product.ProductID">
 
-            Podijeli svoje iskustvo s ovim proizvodom
-        </a>
-}
+                Podijeli iskustvo
+            </a>
+        }
 
+        
     </div>
 </div>
 
+
+        

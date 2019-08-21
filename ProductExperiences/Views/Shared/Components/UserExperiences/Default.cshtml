@@ -5,8 +5,8 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li>
-        <a asp-controller="Experience" asp-action="MyList">
-            <img alt="Moja podijeljena iskustva" src="~/images/shareIcon.png" style="max-width:21px;max-height:21px;" />
+        <a title="Moja podijeljena iskustva" asp-controller="Experience" asp-action="MyList">
+            <img alt="Moja podijeljena iskustva" src="~/images/shareIcon.png" style="max-width:24px;max-height:24px;" />
             <span id="cart-status">
                 @ViewBag.Count
             </span>

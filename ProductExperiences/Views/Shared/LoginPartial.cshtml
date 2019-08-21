@@ -7,15 +7,15 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" id="logoutForm"
           method="post" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Odjava, @User.FindFirst(ClaimTypes.Name).Value</a></li>
+        <ul style="font-family:fantasy;" class="nav navbar-nav navbar-right">
+            <li><a style="color:indianred;" href="javascript:document.getElementById('logoutForm').submit()">Odjava, @User.FindFirst(ClaimTypes.Name).Value</a></li>
         </ul>
     </form>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a id="registerLink" asp-controller="Account" asp-action="Register"> Registracija </a></li>
-        <li><a id="loginLink" asp-controller="Account" asp-action="Login"> Prijava </a></li>
+    <ul  class="nav navbar-nav navbar-right">
+        <li><a style="color:cornflowerblue;" id="registerLink" asp-controller="Account" asp-action="Register"> Registracija </a></li>
+        <li><a style="color:blue;" id="loginLink" asp-controller="Account" asp-action="Login"> Prijava </a></li>
     </ul>
 }

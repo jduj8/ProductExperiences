@@ -99,13 +99,28 @@ namespace ProductExperiences.Controllers
                     }
                 }
 
-
-                ModelState.AddModelError(string.Empty, "Invalid login attemp");
+                ModelState.AddModelError(string.Empty, "Neispravni korisnički podaci");
 
             }
             return View(model);
         }
 
+        
+        public async Task<JsonResult> UserAlreadyExistsAsync(string userName)
+        {
+            var result = await _userManager.FindByNameAsync(userName);
+            return Json(result == null);
+        }
+
+        public async Task<JsonResult> UserExistsAsync(string userName)
+        {
+            bool exists = true;
+            var result = await _userManager.FindByNameAsync(userName);
+            exists = result == null ? false : true;
+            return Json(exists);
+        }
+
+        
     }
 }
  

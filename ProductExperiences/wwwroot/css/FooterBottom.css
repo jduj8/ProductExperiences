@@ -11,10 +11,7 @@ body {
 }
 
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 45px; /* Needed for fixed headers/menu */
-    padding-bottom: 60px; /* Height of the footer */
+    padding: 45px 15px 60px 15px;
 }
 
 footer {

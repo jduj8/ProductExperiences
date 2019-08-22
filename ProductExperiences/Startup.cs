@@ -33,13 +33,23 @@ namespace ProductExperiences
             services.AddDbContextPool<AppDbContext>(
                 options => options.UseSqlServer(_config.GetConnectionString("ProductExperiencesDBConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+            }).AddEntityFrameworkStores<AppDbContext>();
 
 
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IExperienceRepository, ExperienceRepository>();
+
+            
 
             services.AddPaging();
             services.AddMvc();

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> signInManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -61,6 +63,16 @@
                         <li><a asp-area="" asp-controller="Experience" asp-action="Create">Podijeli iskustvo</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Kontakt</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="About">O stranici</a></li>
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a asp-controller="Administration" asp-action="ListRoles">Manage roles</a></li>
+                                    <li><a asp-controller="Administration" asp-action="ListUsers">Manage users</a></li>
+                                </ul>
+                            </li>
+                        }
                         @await Component.InvokeAsync("UserExperiences")
                     </ul>
                     <div class="account-style">

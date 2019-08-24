@@ -56,6 +56,15 @@ namespace ProductExperiences.Controllers
                 
                 if (result.Succeeded)
                 {
+
+                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirani u sustav," +
+                        " za sva dodatna pitanja slobodno nas kontaktirajte!");
+                        return RedirectToAction("ListUsers", "Administration");
+
+                    }
+
                     await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirali u sustav," +
                         " za sva dodatna pitanja slobodno nas kontaktirajte!");
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -103,6 +112,12 @@ namespace ProductExperiences.Controllers
 
             }
             return View(model);
+        }
+
+        [HttpGet] 
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
         

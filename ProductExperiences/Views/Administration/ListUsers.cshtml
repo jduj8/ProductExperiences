@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<IdentityUser>
 
-@{ 
+@{
     ViewData["Title"] = "All users";
 }
 
 <h2>All app users</h2>
 
-<hr/>
+<hr />
 
 @if (Model.Any())
 {
@@ -24,8 +24,22 @@
             </div>
 
             <div class="card-footer">
-                <a href="#" class="btn btn-warning">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <form method="post" asp-action="DeleteUser" asp-route-id="@user.Id">
+                    <a asp-controller="Administration" asp-action="Edituser"
+                       asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+
+                    <span id="confirmDeleteSpan_@user.Id" style="display:none">
+                        <span>Are you sure you want to delete user?</span>
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                        <a href="#" class="btn btn-primary"
+                           onclick="confirmDelete('@user.Id', false)">No</a>
+                    </span>
+
+                    <span id="deleteSpan_@user.Id">
+                        <a href="#" class="btn btn-danger"
+                           onclick="confirmDelete('@user.Id', true)">Delete</a>
+                    </span>
+                </form>
             </div>
         </div>
 
@@ -47,4 +61,8 @@ else
         </div>
     </div>
 
+}
+
+@section Scripts {
+    <script src="~/js/ConfirmDelete.js"></script>
 }

@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ViewModels\HomeViewModels\" />
+    <Folder Include="ViewModels\ContactViewModels\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 

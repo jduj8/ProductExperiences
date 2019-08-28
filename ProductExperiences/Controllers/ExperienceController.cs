@@ -42,6 +42,13 @@ namespace ProductExperiences.Controllers
         public async Task<IActionResult> Index(string category, string searchTerm, int? pageNumber)
         {
 
+            /*
+            if (User.IsInRole("Admin"))
+            {
+                TempData["returnUrlForAdmin"] = Request.Host.ToString() + Request.Path.ToString(); //get full Url
+            }
+            */
+
             IOrderedQueryable<Experience> query;
 
             if (string.IsNullOrEmpty(searchTerm))
@@ -202,6 +209,7 @@ namespace ProductExperiences.Controllers
         [HttpGet]
         public ViewResult MyList()
         {
+            
             IEnumerable<Experience> myExperiences = _experienceRepository.GetExperienceOfUser(User.FindFirst(ClaimTypes.Name).Value);
 
             return View(myExperiences);
@@ -276,9 +284,18 @@ namespace ProductExperiences.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(int experienceID)
+        public IActionResult Delete(int experienceID, string returnUrl)
         {
             var experience = _experienceRepository.DeleteExperience(experienceID);
+
+            if (User.IsInRole("Admin"))
+            {
+               if (experience.UserName != User.Identity.Name)
+                {
+                    return RedirectToAction("Index", new { category = "Sve kategorije" });
+                }
+            
+            }
 
             return RedirectToAction("MyList", "Experience");
         }

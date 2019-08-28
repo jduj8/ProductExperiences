@@ -136,7 +136,6 @@ namespace ProductExperiences.Controllers
                     
                 };
 
-                Debug.WriteLine(experience.Date.ToString("yyyy/mm/dd hh:mm"));
 
                 var addedExperience = _experienceRepository.AddExperience(experience);
                 return RedirectToAction("details", new { experienceID = addedExperience.ExperienceID });

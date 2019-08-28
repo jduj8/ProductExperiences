@@ -18,8 +18,7 @@
             <p style="font-size:large; font-family:'Bookman Old Style';">Trenutno nemate podijeljenih iskustva, želite li kreirati novo iskustvo?</p>
             <a class="btn btn-primary"
                asp-controller="Experience"
-               asp-action="Create"
-            >
+               asp-action="Create">
                 Podijeli svoje iskustvo
             </a>
         </div>
@@ -34,4 +33,8 @@
     }
 </div>
 
-    
+@section Scripts {
+    <script src="~/js/ConfirmDelete.js"></script>
+}
+
+

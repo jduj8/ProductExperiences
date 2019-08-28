@@ -59,8 +59,20 @@
         {
             <hr />
             <form style="display:inline" asp-action="Delete" asp-controller="Experience" method="post" asp-route-experienceID="@Model.Experience.ExperienceID">
-                <button onclick="return confirm('Jeste li sigurni da želite obrisati podijeljeno iskustvo za proizvod @Model.Experience.Product.ProductName?');" class="btn btn-danger">Obriši ovo iskustvo</button>
+                <span id="confirmDeleteSpan_@Model.Experience.ExperienceID" style="display:none">
+                    <span><b>Briši ovo iskustvo?</b></span>
+                    <button type="submit" class="btn btn-danger">Da</button>
+                    <a href="#" class="btn btn-primary"
+                       onclick="confirmDelete('@Model.Experience.ExperienceID', false)">Ne</a>
+                </span>
+
+                <span id="deleteSpan_@Model.Experience.ExperienceID">
+                    <a href="#" class="btn btn-danger"
+                       onclick="confirmDelete('@Model.Experience.ExperienceID', true)">Obriši ovo iskustvo</a>
+                </span>
             </form>
+
+
         }
         <hr />
         @if (!hideCreate)
@@ -79,5 +91,9 @@
 
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/ConfirmDelete.js"></script>
+}
 
 

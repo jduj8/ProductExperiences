@@ -46,10 +46,28 @@
                 Ažuriraj
             </a>
 
-            <form style="display:inline" asp-action="Delete" asp-controller="Experience" method="post" asp-route-experienceID="@Model.ExperienceID">
-                <button onclick="return confirm('Jeste li sigurni da želite obrisati podijeljeno iskustvo za proizvod @Model.Product.ProductName?');" class="btn btn-danger">Briši</button>
+
+            <form method="post" style="display:inline" asp-action="Delete" asp-controller="Experience" asp-route-experienceID="@Model.ExperienceID">
+                
+
+                <span id="confirmDeleteSpan_@Model.ExperienceID" style="display:none">
+                    <span><b>Potvrda brisanja?</b></span>
+                    <button type="submit" class="btn btn-danger">Da</button>
+                    <a href="#" class="btn btn-primary"
+                       onclick="confirmDelete('@Model.ExperienceID', false)">Ne</a>
+                </span>
+
+                <span id="deleteSpan_@Model.ExperienceID">
+                    <a href="#" class="btn btn-danger"
+                       onclick="confirmDelete('@Model.ExperienceID', true)">Briši</a>
+                </span>
             </form>
+
 
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/ConfirmDelete.js"></script>
+}

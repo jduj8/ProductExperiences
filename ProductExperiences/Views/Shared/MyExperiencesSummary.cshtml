@@ -24,16 +24,16 @@
     }
 }
 
-<div class="col-sm-4 col-lg-4 col-md-4">
+<div class="col-sm-6 col-lg-4 col-md-4">
 
-    <div class="thumbnail">
+    <div class="thumbnail experience">
         <div class="text-center">
             <h4>@productName</h4>
         </div>
 
-        <img style="height:150px; margin-bottom:10px;" src="~/images/products/@(Model.PhotoPath ?? "noImage.png")" class="img-responsive" alt="" />
+        <img style="height:150px; margin-bottom:10px;" src="~/images/products/@(Model.PhotoPath ?? "noImage.png")" class="img-responsive img-rounded" alt="" />
         <div style="display:inline;" class="caption">
-            <img style="display:inline;" src="~/images/star.png" alt="">
+            <img height="21" width="21" style="display:inline;" src="~/images/star.png" alt="">
             <p style="display:inline"> @Model.Evaluation/10</p>
             <p class="pull-right" style="display:inline;font-size:smaller;">@Model.Date.ToString("dd MMM yyyy")</p>
         </div>
@@ -71,3 +71,12 @@
 @section Scripts {
     <script src="~/js/ConfirmDelete.js"></script>
 }
+
+<style>
+    .experience:hover {
+        background-color: khaki;
+        border: solid 1px;
+        border-color: blue;
+        color: blue;
+    }
+</style>

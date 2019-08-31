@@ -147,5 +147,15 @@
     background-color:whitesmoke;
 }
 
+.loginUser {
+    font-family: fantasy;
+    font-size: medium;
+    color: indianred;
+}
+
+.div_hover:hover {
+    background-color: #000000;
+}
+
 
 

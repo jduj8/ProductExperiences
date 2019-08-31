@@ -2,11 +2,11 @@
     <a asp-controller="Experience"
        asp-action="Index"
        class="dropdown-toggle" data-toggle="dropdown">Kategorija<b class="caret"></b></a>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu category-dropdown">
         @foreach (var category in Model)
         {
             <li>
-                <a asp-controller="Experience" asp-action="Index"
+                <a class="menu" asp-controller="Experience" asp-action="Index"
                    asp-route-category="@category">@category</a>
             </li>
         }
@@ -16,3 +16,12 @@
         </li>
     </ul>
 </li>
+
+<style>
+    .category-dropdown{
+        background-color:khaki;
+    }
+
+    
+
+</style>

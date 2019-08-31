@@ -20,7 +20,7 @@
     <div class="form-group row">
         <label asp-for="Category" class="col-sm-2 col-form-label">Kategorija:</label>
         <div class="col-sm-10">
-            <select asp-for="Category" class="custom-select mr-sm-2"
+            <select asp-for="Category" class="btn btn-default custom-select mr-sm-2"
                     asp-items="Html.GetEnumSelectList<Category>()">
                 <option value="">Please select</option>
             </select>
@@ -39,7 +39,7 @@
     <div class="form-group row">
         <label asp-for="Describe" class="col-sm-2 col-form-label">Moj dojam o proizvodu:</label>
         <div class="col-sm-10">
-            <textarea asp-for="Describe" class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" placeholder="Podijeli svoje iskustvo..."></textarea>
+            <textarea style="min-height:121px"  asp-for="Describe" class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" placeholder="Podijeli svoje iskustvo..."></textarea>
             <span asp-validation-for="Describe" class="text-danger"></span>
         </div>
     </div>
@@ -48,7 +48,7 @@
     <div class="form-group row">
         <label asp-for="Recommendation" class="col-sm-2 col-form-label">Preporuka:</label>
         <div class="col-sm-10">
-            <select asp-for="Recommendation" class="custom-select mr-sm-2"
+            <select asp-for="Recommendation" class="btn btn-default custom-select mr-sm-2"
                     asp-items="Html.GetEnumSelectList<Recommendation>()">
                 <option value="">Please select</option>
             </select>

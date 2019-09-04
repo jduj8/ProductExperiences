@@ -144,7 +144,7 @@
 
 .navbar-default .navbar-nav li a:hover, .navbar-default .navbar-nav li a.active {
     color: darkblue;
-    background-color:whitesmoke;
+    font-size:large;
 }
 
 .loginUser {

@@ -15,7 +15,7 @@ namespace ProductExperiences.ViewModels
         public string ProductName { get; set; }
         
         [Required(ErrorMessage = "Odaberite kategoriju")]
-        public Category Category { get; set; }
+        public string CategoryID { get; set; }
 
         [Required(ErrorMessage = "Unesite ocjenu proizvoda")]
         [Range(1, 10 , ErrorMessage = "Ocjena proizvoda mora biti između 1 i 10")]

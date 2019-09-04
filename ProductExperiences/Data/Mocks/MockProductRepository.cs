@@ -20,28 +20,28 @@ namespace ProductExperiences.Data.Mocks
                 {
                     ProductID = 1,
                     ProductName = "Stolna lampa Hakaan",
-                    Category = Category.Namještaj
+                    Category = new Category()
                 },
 
                 new Product
                 {
                     ProductID = 2,
                     ProductName = "ASUS Laptop X540MA",
-                    Category = Category.Informatika
+                    Category = new Category()
                 },
 
                 new Product
                 {
                     ProductID = 3,
                     ProductName = "Makita aku bušilica 26v/5 Ah 2018 god",
-                    Category = Category.Alati
+                    Category = new Category()
                 },
 
                 new Product
                 {
                     ProductID = 4,
                     ProductName = "Kingston SSD A400 120GB, SA400S37/120G",
-                    Category = Category.Informatika
+                    Category = new Category()
                 }
                 
             };
@@ -69,7 +69,7 @@ namespace ProductExperiences.Data.Mocks
             throw new NotImplementedException();
         }
 
-        public Product GetProductUsingNameAndCategory(string productName, Category category)
+        public Product GetProductUsingNameAndCategory(string productName, int categoryID)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
-﻿using ProductExperiences.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,8 @@ namespace ProductExperiences.Data.Repositories
 
         public Product GetProduct(int productID)
         {
-            var product = _context.Products.FirstOrDefault(p => p.ProductID == productID);
+            
+            var product = _context.Products.Include(c => c.Category).FirstOrDefault(p => p.ProductID == productID);
             return product;
         }
 
@@ -50,11 +52,11 @@ namespace ProductExperiences.Data.Repositories
             return _context.Products.Where(p => p.Category.ToString() == category);
         }
 
-        public Product GetProductUsingNameAndCategory(string productName, Category category)
+        public Product GetProductUsingNameAndCategory(string productName, int categoryID)
         {
-            foreach (Product product in _context.Products)
+            foreach (Product product in _context.Products.Include(c => c.Category))
             {
-                if (product.ProductName.ToLower() == productName.ToLower() && product.Category == category)
+                if (product.ProductName.ToLower() == productName.ToLower() && product.Category.CategoryID == categoryID)
                 {
                     return product;
                 }

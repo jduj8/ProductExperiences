@@ -23,6 +23,7 @@ namespace ProductExperiences.Controllers
         public IActionResult Index()
         {
             var experiences = _experienceRepository.GetAllExperiences().OrderByDescending(e => e.Date).Take(6);
+            Debug.WriteLine("ExperienceID: " + experiences.ElementAt(0).Product.ProductName);
             return View(experiences);
         }
 

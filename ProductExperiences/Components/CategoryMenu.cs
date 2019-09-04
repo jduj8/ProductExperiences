@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,16 @@ namespace ProductExperiences.Components
 {
     public class CategoryMenu: ViewComponent
     {
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryMenu(ICategoryRepository categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
+
         public IViewComponentResult Invoke()
         {
-            var categories = Enum.GetValues(typeof(Category));
-
+            var categories = _categoryRepository.Categories.OrderBy(p => p.CategoryName);
             return View(categories);
-
-
         }
     }
 }

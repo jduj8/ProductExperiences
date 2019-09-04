@@ -48,7 +48,7 @@ namespace ProductExperiences
 
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IExperienceRepository, ExperienceRepository>();
-
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
             
 
             services.AddPaging();

@@ -83,6 +83,10 @@ namespace ProductExperiences.Data.Mocks
             return _experiences;
         }
 
+        public IEnumerable<Experience> GetAllExperiencesIncludeCategory()
+        {
+            throw new NotImplementedException();
+        }
 
         public Experience GetExperience(int experienceID)
         {
@@ -95,6 +99,11 @@ namespace ProductExperiences.Data.Mocks
             }
 
             return experience;
+        }
+
+        public Experience GetExperienceForEdit(int experienceID)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Experience> GetExperienceOfUser(string userName)

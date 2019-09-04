@@ -9,7 +9,9 @@ namespace ProductExperiences.Data.Interfaces
     public interface IExperienceRepository
     {
         Experience GetExperience(int experienceID);
+        Experience GetExperienceForEdit(int experienceID);
         IEnumerable<Experience> GetAllExperiences();
+        IEnumerable<Experience> GetAllExperiencesIncludeCategory();
         IEnumerable<Experience> GetExperiencesWithProduct(int productID);
         IEnumerable<Experience> GetExperiencesWithProductName(string term);
         IEnumerable<Experience> GetLastThreeExperiences();

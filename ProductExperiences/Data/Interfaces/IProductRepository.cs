@@ -13,6 +13,6 @@ namespace ProductExperiences.Data.Interfaces
         Product AddProduct(Product product);
         Product UpdateProduct(Product productChanges);
         IEnumerable<Product> GetProductsFromCategory(string category);
-        Product GetProductUsingNameAndCategory(string productName, Category category);
+        Product GetProductUsingNameAndCategory(string productName, int categoryID);
     }
 }

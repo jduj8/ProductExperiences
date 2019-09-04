@@ -19,7 +19,7 @@ namespace ProductExperiences.Data
 
         public DbSet<Experience> Experiences { get; set; }
 
-
+        public DbSet<Category> Categories { get; set; }
         
     }
 }

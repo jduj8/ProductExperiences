@@ -26,14 +26,16 @@ namespace ProductExperiences.Controllers
 
         private readonly IProductRepository _productRepository;
         private readonly IExperienceRepository _experienceRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         //test
 
-        public ExperienceController(IProductRepository productRepository, IExperienceRepository experienceRepository, IHostingEnvironment hostingEnvironment)
+        public ExperienceController(IProductRepository productRepository, IExperienceRepository experienceRepository, ICategoryRepository categoryRepository, IHostingEnvironment hostingEnvironment)
         {
             _productRepository = productRepository;
             _experienceRepository = experienceRepository;
+            _categoryRepository = categoryRepository;
             _hostingEnvironment = hostingEnvironment;
         }
 
@@ -104,6 +106,7 @@ namespace ProductExperiences.Controllers
         [Authorize]
         public ViewResult Create()
         {
+            ViewBag.Categories = _categoryRepository.Categories.OrderBy(c => c.CategoryName);
             return View();
         }
 
@@ -116,13 +119,12 @@ namespace ProductExperiences.Controllers
                 var product = new Product
                 {
                     ProductName = experienceCreateVM.ProductName,
-                    Category = experienceCreateVM.Category
+                    CategoryID = int.Parse(experienceCreateVM.CategoryID)
                 };
 
                 var addedProduct = _productRepository.AddProduct(product);
 
                 string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo);
-
 
                 var experience = new Experience
                 {
@@ -150,10 +152,10 @@ namespace ProductExperiences.Controllers
         {
             Product product = _productRepository.GetProduct(productID);
 
-            var checkExist = _experienceRepository.GetAllExperiences().Where(
-                e => e.ProductID == productID  && 
+            var checkExist = _experienceRepository.GetAllExperiencesIncludeCategory().Where(
+                e => e.ProductID == productID &&
                 e.UserName == User.FindFirst(ClaimTypes.Name).Value &&
-                e.Product.Category.ToString() == product.Category.ToString()
+                e.Product.Category.CategoryID == product.Category.CategoryID
                 );
 
           
@@ -165,9 +167,10 @@ namespace ProductExperiences.Controllers
             ExperienceCreateForExistingProductViewModel experienceCreateVM = new ExperienceCreateForExistingProductViewModel
             {
                 ProductName = product.ProductName,
-                Category = product.Category             
+                CategoryID = product.Category.CategoryID.ToString()       
             };
 
+            ViewBag.Categories = _categoryRepository.Categories.OrderBy(c => c.CategoryName);
             TempData["ProductID"] = productID;
 
             return View(experienceCreateVM);
@@ -218,19 +221,21 @@ namespace ProductExperiences.Controllers
         [Authorize]
         public ViewResult Edit(int experienceID)
         {
-            Experience experience = _experienceRepository.GetExperience(experienceID);
+            Experience experience = _experienceRepository.GetExperienceForEdit(experienceID);
 
 
             ExperienceEditViewModel experienceEditVM = new ExperienceEditViewModel
             {
                 ExperienceID = experience.ExperienceID,
                 ProductName = experience.Product.ProductName,
-                Category = experience.Product.Category,
+                CategoryID = experience.Product.Category.CategoryID.ToString(),
                 Evaluation = experience.Evaluation,
                 Describe = experience.Describe,
                 Recommendation = experience.Recommendation,
                 ExistingPhotoPath = experience.PhotoPath              
             };
+
+            ViewBag.Categories = _categoryRepository.Categories.OrderBy(c => c.CategoryName);
 
             return View(experienceEditVM);
         }
@@ -242,19 +247,19 @@ namespace ProductExperiences.Controllers
             if (ModelState.IsValid)
             {
 
-                var product = _productRepository.GetProductUsingNameAndCategory(experienceEditVM.ProductName, experienceEditVM.Category);
+                var product = _productRepository.GetProductUsingNameAndCategory(experienceEditVM.ProductName, int.Parse(experienceEditVM.CategoryID)); /*experienceEditVM.Category.CategoryName*/
                 if (product == null)
                 {
                     product = new Product
                     {
                         ProductName = experienceEditVM.ProductName,
-                        Category = experienceEditVM.Category
+                        CategoryID = int.Parse(experienceEditVM.CategoryID)
                     };
 
                     _productRepository.AddProduct(product);
                 }
 
-                Debug.WriteLine(product.ProductID);
+                
 
                 string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceEditVM.Photo);               
 

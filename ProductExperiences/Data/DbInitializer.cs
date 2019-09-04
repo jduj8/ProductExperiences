@@ -90,31 +90,31 @@ namespace ProductExperiences.Data
                         new Product
                         {
                             ProductName = "Stolna lampa Hakaan",
-                            Category = Category.Namještaj
+                            Category = new Category()
                         },
 
                         new Product
                         {
                             ProductName = "ASUS Laptop X540MA",
-                            Category = Category.Informatika
+                            Category = new Category()
                         },
 
                         new Product
                         {
                             ProductName = "Makita aku bušilica 26v/5 Ah 2018 god",
-                            Category = Category.Alati
+                            Category = new Category()
                         },
 
                         new Product
                         {
                             ProductName = "Kingston SSD A400 120GB, SA400S37/120G",
-                            Category = Category.Informatika
+                            Category = new Category()
                         },
 
                         new Product
                         {
                             ProductName = "Opel Astra Sport Tourer 1.7 cdti 110ks 2014. god. COSMO",
-                            Category = Category.Vozila
+                            Category = new Category()
                         }
 
                     

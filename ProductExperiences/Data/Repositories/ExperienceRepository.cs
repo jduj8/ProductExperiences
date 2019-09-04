@@ -43,13 +43,40 @@ namespace ProductExperiences.Data.Repositories
 
         public IEnumerable<Experience> GetAllExperiences()
         {
-            return _context.Experiences.Include(p => p.Product);
+            var experiences = (from e in _context.Experiences
+                                join p in _context.Products
+                                on e.ProductID equals p.ProductID
+                                select new Experience
+                                {
+                                    ExperienceID = e.ExperienceID,
+                                    Product = p,
+                                    ProductID = p.ProductID,
+                                    Evaluation = e.Evaluation,
+                                    Describe = e.Describe,
+                                    Recommendation = e.Recommendation,
+                                    PhotoPath = e.PhotoPath,
+                                    Date = e.Date
+                                });
+
+            return experiences;
         }
 
+        public IEnumerable<Experience> GetAllExperiencesIncludeCategory()
+        {
+            var experiences = _context.Experiences.Include(p => p.Product).Include(c => c.Product.Category);
+            return experiences;
+        }
 
         public Experience GetExperience(int experienceID)
         {
             var experience = _context.Experiences.Include(p => p.Product).FirstOrDefault(e => e.ExperienceID == experienceID);
+            return experience;
+        }
+
+        public Experience GetExperienceForEdit(int experienceID)
+        {
+            var experience = _context.Experiences.Include(p => p.Product).Include(c => c.Product.Category)
+                .FirstOrDefault(e => e.ExperienceID == experienceID);
             return experience;
         }
 
@@ -60,7 +87,7 @@ namespace ProductExperiences.Data.Repositories
 
         public IEnumerable<Experience> GetExperiencesFromCategory(string category)
         {
-            return _context.Experiences.Include(p => p.Product).Where(e => e.Product.Category.ToString() == category);
+            return _context.Experiences.Include(p => p.Product).Include(c => c.Product.Category).Where(e => e.Product.Category.CategoryName.ToString() == category);
         }
 
         public IEnumerable<Experience> GetExperiencesWithProduct(int productID)

@@ -1,0 +1,26 @@
+﻿@model EditCategoryViewModel
+
+@{
+    ViewData["Title"] = "Edit existing category";
+}
+
+<h2>Edit existing category</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" asp-controller="Administration" asp-action="EditCategory">
+            <input hidden asp-for="@Model.CategoryID" />
+
+            <div class="form-group">
+                <label asp-for="CategoryName">Category name</label>
+                <input asp-for="CategoryName" class="form-control" placeholder="Category name" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Update category</button>
+            <a asp-controller="Administration" asp-action="ListCategories" class="btn btn-primary">Back</a>
+        </form>
+    </div>
+</div>

@@ -212,7 +212,7 @@ namespace ProductExperiences.Controllers
         public ViewResult MyList()
         {
             
-            IEnumerable<Experience> myExperiences = _experienceRepository.GetExperienceOfUser(User.FindFirst(ClaimTypes.Name).Value);
+            IEnumerable<Experience> myExperiences = _experienceRepository.GetExperienceOfUser(User.FindFirst(ClaimTypes.Name).Value).OrderByDescending(e => e.Date);
 
             return View(myExperiences);
         }

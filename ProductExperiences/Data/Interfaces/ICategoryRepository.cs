@@ -10,5 +10,7 @@ namespace ProductExperiences.Data.Interfaces
     {
         IEnumerable<Category> Categories { get; }
         Category GetCategory(int categoryID);
+        Category AddCategory(Category category);
+        Category UpdateCategory(Category categoryChanges);
     }
 }

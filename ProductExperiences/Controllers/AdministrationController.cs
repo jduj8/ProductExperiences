@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ProductExperiences.Data.Interfaces;
+using ProductExperiences.Data.Models;
 using ProductExperiences.ViewModels;
+using ProductExperiences.ViewModels.AdministrationViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,11 +20,13 @@ namespace ProductExperiences.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ICategoryRepository categoryRepository)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
@@ -325,6 +331,72 @@ namespace ProductExperiences.Controllers
                 return View("ListRoles");
             }
         }
+
+        [HttpGet]
+        public IActionResult ListCategories()
+        {
+            var categories = _categoryRepository.Categories.OrderBy(c => c.CategoryName);
+            return View(categories);
+        }
+
+        [HttpGet]
+        public IActionResult AddCategory()
+        {
+            return View();
+        }
+
+        public IActionResult AddCategory(AddCategoryViewModel addCategoryVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var category = new Category
+                {
+                    CategoryName = addCategoryVM.CategoryName
+                };
+
+                _categoryRepository.AddCategory(category);
+                return RedirectToAction("ListCategories");
+            }
+            return View(addCategoryVM);
+        }
+
+        [HttpGet]
+        public IActionResult EditCategory(int categoryID)
+        {
+            var category = _categoryRepository.GetCategory(categoryID);
+            var editCategoryVM = new EditCategoryViewModel
+            {
+                CategoryID = category.CategoryID,
+                CategoryName = category.CategoryName
+            };
+            return View(editCategoryVM);
+        }
+
+        [HttpPost]
+        public IActionResult EditCategory(EditCategoryViewModel editCategoryVM)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                var categoryChanges = new Category
+                {
+                    CategoryID = editCategoryVM.CategoryID,
+                    CategoryName = editCategoryVM.CategoryName
+                };
+
+                _categoryRepository.UpdateCategory(categoryChanges);
+                return RedirectToAction("ListCategories");
+            }
+
+            return View("ListCategories");
+        }
+
+        public JsonResult CategoryExists(string categoryName)
+        {
+            var result = _categoryRepository.Categories.Where(c => c.CategoryName.ToLower() == categoryName.ToLower()).FirstOrDefault();
+            return Json(result == null);
+        }
+
 
 
     }

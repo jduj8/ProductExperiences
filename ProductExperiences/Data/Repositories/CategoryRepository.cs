@@ -16,11 +16,26 @@ namespace ProductExperiences.Data.Repositories
         }
         public IEnumerable<Category> Categories => _appDbContext.Categories;
 
+        public Category AddCategory(Category category)
+        {
+            _appDbContext.Categories.Add(category);
+            _appDbContext.SaveChanges();
+            return category;
+        }
+
         public Category GetCategory(int categoryID)
         {
             var category = _appDbContext.Categories.Where(c => c.CategoryID == categoryID).FirstOrDefault();
 
             return category;
+        }
+
+        public Category UpdateCategory(Category categoryChanges)
+        {
+            var category = _appDbContext.Categories.Attach(categoryChanges);
+            category.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _appDbContext.SaveChanges();
+            return categoryChanges;
         }
     }
 }

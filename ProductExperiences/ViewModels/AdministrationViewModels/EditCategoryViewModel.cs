@@ -5,16 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductExperiences.Data.Models
+namespace ProductExperiences.ViewModels.AdministrationViewModels
 {
-    public class Category
+    public class EditCategoryViewModel
     {
-        [Key]
         public int CategoryID { get; set; }
 
         [Required]
+        [MaxLength(31, ErrorMessage = "Max length of category is 31")]
+        [Remote("CategoryExists", "Administration", ErrorMessage = "Category already exists")]
         public string CategoryName { get; set; }
-
-        public List<Product> Products { get; set; }
     }
 }

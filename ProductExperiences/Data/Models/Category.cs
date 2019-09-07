@@ -15,6 +15,8 @@ namespace ProductExperiences.Data.Models
         [Required]
         public string CategoryName { get; set; }
 
+        public string CategoryPhotoPath { get; set; }
+
         public List<Product> Products { get; set; }
     }
 }

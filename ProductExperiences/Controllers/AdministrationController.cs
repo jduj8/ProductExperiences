@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Models;
+using ProductExperiences.Helpers;
 using ProductExperiences.ViewModels;
 using ProductExperiences.ViewModels.AdministrationViewModels;
 
@@ -21,12 +23,14 @@ namespace ProductExperiences.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ICategoryRepository categoryRepository)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ICategoryRepository categoryRepository, IHostingEnvironment hostingEnvironment)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _categoryRepository = categoryRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -345,13 +349,19 @@ namespace ProductExperiences.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult AddCategory(AddCategoryViewModel addCategoryVM)
         {
             if (ModelState.IsValid)
             {
+                Debug.WriteLine(addCategoryVM.Photo.FileName);
+                Debug.WriteLine(_hostingEnvironment.ApplicationName.ToString());
+                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(addCategoryVM.Photo, _hostingEnvironment, "images/categories");
+                Debug.WriteLine(uniqueFileName);
                 var category = new Category
                 {
-                    CategoryName = addCategoryVM.CategoryName
+                    CategoryName = addCategoryVM.CategoryName,
+                    CategoryPhotoPath = uniqueFileName
                 };
 
                 _categoryRepository.AddCategory(category);
@@ -367,7 +377,8 @@ namespace ProductExperiences.Controllers
             var editCategoryVM = new EditCategoryViewModel
             {
                 CategoryID = category.CategoryID,
-                CategoryName = category.CategoryName
+                CategoryName = category.CategoryName,
+                ExistingPhotoPath = category.CategoryPhotoPath
             };
             return View(editCategoryVM);
         }
@@ -378,10 +389,16 @@ namespace ProductExperiences.Controllers
             
             if (ModelState.IsValid)
             {
+
+                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(editCategoryVM.Photo, _hostingEnvironment, "images/categories");
+
+                var photoPath = uniqueFileName == null ? editCategoryVM.ExistingPhotoPath : uniqueFileName;
+
                 var categoryChanges = new Category
                 {
                     CategoryID = editCategoryVM.CategoryID,
-                    CategoryName = editCategoryVM.CategoryName
+                    CategoryName = editCategoryVM.CategoryName,
+                    CategoryPhotoPath = photoPath
                 };
 
                 _categoryRepository.UpdateCategory(categoryChanges);

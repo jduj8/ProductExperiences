@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,10 @@ namespace ProductExperiences.ViewModels.AdministrationViewModels
 
         [Required]
         [MaxLength(31, ErrorMessage = "Max length of category is 31")]
-        [Remote("CategoryExists", "Administration", ErrorMessage = "Category already exists")]
         public string CategoryName { get; set; }
+
+        public string ExistingPhotoPath { get; set; }
+
+        public IFormFile Photo { get; set; }
     }
 }

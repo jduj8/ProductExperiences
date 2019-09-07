@@ -1,13 +1,26 @@
-﻿<li class="dropdown">
+﻿
+<li class="dropdown">
     <a asp-controller="Experience"
        asp-action="Index"
        class="dropdown-toggle" data-toggle="dropdown">Kategorija<b class="caret"></b></a>
     <ul class="dropdown-menu category-dropdown">
         @foreach (var category in Model)
         {
-            <li>
-                <a class="menu" asp-controller="Experience" asp-action="Index"
+            var photoPath = "";
+            if (category.CategoryPhotoPath != null)
+            {
+                photoPath = "~/images/categories/" + (category.CategoryPhotoPath ?? "noImage.png");
+            }
+
+            else
+            {
+                photoPath = "~/images/categories/noImage.png";
+            }
+            <li style="min-width:234px; margin-left:5px;" class="menu">
+                <img style="display:inline-block;" class="imgResize"  src="@Url.Content(photoPath)" height="21" width="21" />
+                <a style="display:inline-block;"  asp-controller="Experience" asp-action="Index"
                    asp-route-category="@category.CategoryName">@category.CategoryName</a>
+
             </li>
         }
         <li class="divider"></li>
@@ -18,10 +31,8 @@
 </li>
 
 <style>
-    .category-dropdown{
-        background-color:khaki;
+    .category-dropdown {
+        background-color: khaki;
     }
-
-    
 
 </style>

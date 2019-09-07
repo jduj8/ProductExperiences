@@ -124,7 +124,7 @@ namespace ProductExperiences.Controllers
 
                 var addedProduct = _productRepository.AddProduct(product);
 
-                string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo);
+                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo, _hostingEnvironment, "images/products");
 
                 var experience = new Experience
                 {
@@ -184,7 +184,7 @@ namespace ProductExperiences.Controllers
 
             if (ModelState.IsValid)
             {
-                string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo);
+                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(experienceCreateVM.Photo, _hostingEnvironment, "images/products");
 
                 var product = _productRepository.GetProduct(int.Parse(TempData["ProductID"].ToString()));
 
@@ -261,7 +261,7 @@ namespace ProductExperiences.Controllers
 
                 
 
-                string uniqueFileName = SaveImageAndReturnUniqueFileName(experienceEditVM.Photo);               
+                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(experienceEditVM.Photo, _hostingEnvironment, "images/products");               
 
                 var photoPath = uniqueFileName == null ? experienceEditVM.ExistingPhotoPath : uniqueFileName;
 
@@ -277,7 +277,7 @@ namespace ProductExperiences.Controllers
                     Date = DateTime.Now
 
                 };
-
+                
 
                 var updateExperience = _experienceRepository.UpdateExperience(experience);
                 return RedirectToAction("details", new { experienceID = updateExperience.ExperienceID });
@@ -303,26 +303,6 @@ namespace ProductExperiences.Controllers
 
             return RedirectToAction("MyList", "Experience");
         }
-
-        
-        [NonAction]
-        public string SaveImageAndReturnUniqueFileName(IFormFile photo)
-        {
-            string uniqueFileName = null;
-
-            if (photo != null)
-            {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images/products");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                photo.CopyTo(new FileStream(filePath, FileMode.Create));
-
-            }
-
-            return uniqueFileName;
-        }
-
-        
 
     }
 }

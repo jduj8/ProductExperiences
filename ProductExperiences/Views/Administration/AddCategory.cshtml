@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form method="post">
+        <form enctype="multipart/form-data" method="post" asp-action="AddCategory" asp-controller="Administration">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CategoryName">Category name</label>
@@ -18,9 +18,33 @@
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
 
-            <button type="submit" class="btn btn-primary">Add category</button>
-            <a asp-controller="Administration" asp-action="ListCategories" class="btn btn-info">Back</a>
+                <div class="text-center">
+                    <div class="fileUpload btn btn-default">
+                        <span>Load category photo</span>
+                        <input id="uploadBtn" asp-for="Photo" accept=".png,.jpg,.jpeg,.gif" asp- type="file" class="upload" />
+                    </div>
+                    <input id="uploadFile" class="form-control" placeholder="Chosen photo" disabled="disabled" />
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top:21px;">
+                <button type="submit" class="btn btn-primary">Add category</button>
+                <a asp-controller="Administration" asp-action="ListCategories" class="btn btn-info">Back</a>
+            </div>
         </form>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+    document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("uploadFile").value = this.value.split("\\").pop();
+    };
+
+
+
+    </script>
+
+}

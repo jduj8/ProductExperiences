@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit existing category";
+    var photoPath = "~/Images/Categories/" + (Model.ExistingPhotoPath ?? "noImage.png");
 }
 
 <h2>Edit existing category</h2>
@@ -10,7 +11,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form method="post" asp-controller="Administration" asp-action="EditCategory">
+        <form enctype="multipart/form-data" method="post" asp-controller="Administration" asp-action="EditCategory">
             <input hidden asp-for="@Model.CategoryID" />
 
             <div class="form-group">
@@ -19,8 +20,40 @@
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-warning">Update category</button>
-            <a asp-controller="Administration" asp-action="ListCategories" class="btn btn-primary">Back</a>
+            <hr />
+            <div class="form-group">
+                <div class="text-center">
+                    <img width="150" height="150" src="@photoPath" class="img-thumbnail" asp-append-version="true" />
+                </div>
+            </div>
+            <hr />
+
+            <div class="form-group">
+
+                <div class="text-center">
+                    <div class="fileUpload btn btn-default">
+                        <span>Load new category photo</span>
+                        <input id="uploadBtn" asp-for="Photo" accept=".png,.jpg,.jpeg,.gif" asp- type="file" class="upload" />
+                    </div>
+                    <input id="uploadFile" value="@Model.ExistingPhotoPath" class="form-control" placeholder="Chosen photo" disabled="disabled" />
+                </div>
+            </div>
+
+
+            <div class="form-group" style="margin-top:21px;">
+                <button type="submit" class="btn btn-warning">Update category</button>
+                <a asp-controller="Administration" asp-action="ListCategories" class="btn btn-primary">Back</a>
+            </div>
         </form>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+    document.getElementById("uploadBtn").onchange = function () {
+        document.getElementById("uploadFile").value = this.value.split("\\").pop();
+    };
+
+    </script>
+
+}

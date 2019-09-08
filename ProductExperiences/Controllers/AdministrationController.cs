@@ -392,7 +392,8 @@ namespace ProductExperiences.Controllers
 
                 string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(editCategoryVM.Photo, _hostingEnvironment, "images/categories");
 
-                var photoPath = uniqueFileName == null ? editCategoryVM.ExistingPhotoPath : uniqueFileName;
+                var existingPhotoPath = editCategoryVM.ExistingPhotoPath;
+                var photoPath = uniqueFileName == null ? existingPhotoPath : uniqueFileName;
 
                 var categoryChanges = new Category
                 {

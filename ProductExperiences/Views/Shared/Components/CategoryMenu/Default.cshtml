@@ -16,10 +16,10 @@
             {
                 photoPath = "~/images/categories/noImage.png";
             }
-            <li style="min-width:234px; margin-left:5px;" class="menu">
-                <img style="display:inline-block;" class="imgResize"  src="@Url.Content(photoPath)" height="21" width="21" />
+            <li style="min-width:220px;">
+                
                 <a style="display:inline-block;"  asp-controller="Experience" asp-action="Index"
-                   asp-route-category="@category.CategoryName">@category.CategoryName</a>
+                   asp-route-category="@category.CategoryName"><img style="display:inline-block;" class="imgResize" src="@Url.Content(photoPath)" height="21" width="21" /> @category.CategoryName</a>
 
             </li>
         }

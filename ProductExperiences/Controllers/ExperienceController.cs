@@ -261,7 +261,20 @@ namespace ProductExperiences.Controllers
 
                 
 
-                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(experienceEditVM.Photo, _hostingEnvironment, "images/products");               
+                string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(experienceEditVM.Photo, _hostingEnvironment, "images/products");
+
+                if (uniqueFileName != null && System.IO.File.Exists("wwwroot/images/products/" + experienceEditVM.ExistingPhotoPath))
+                {
+                    try
+                    {
+                        System.IO.File.Delete("wwwroot/images/products/" + experienceEditVM.ExistingPhotoPath);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
 
                 var photoPath = uniqueFileName == null ? experienceEditVM.ExistingPhotoPath : uniqueFileName;
 

@@ -12,7 +12,6 @@ using ProductExperiences.Data.Models;
 using ProductExperiences.Helpers;
 using ProductExperiences.ViewModels;
 using ProductExperiences.ViewModels.AdministrationViewModels;
-
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ProductExperiences.Controllers
@@ -391,6 +390,18 @@ namespace ProductExperiences.Controllers
             {
 
                 string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(editCategoryVM.Photo, _hostingEnvironment, "images/categories");
+
+                if (uniqueFileName != null && System.IO.File.Exists("wwwroot/images/categories/" + editCategoryVM.ExistingPhotoPath))
+                {
+                    try
+                    {
+                        System.IO.File.Delete("wwwroot/images/categories/" + editCategoryVM.ExistingPhotoPath);
+                    }
+                    catch
+                    {
+
+                    }
+                }
 
                 var existingPhotoPath = editCategoryVM.ExistingPhotoPath;
                 var photoPath = uniqueFileName == null ? existingPhotoPath : uniqueFileName;

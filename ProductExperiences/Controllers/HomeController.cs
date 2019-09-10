@@ -18,28 +18,17 @@ namespace ProductExperiences.Controllers
             _experienceRepository = experienceRepository;
         }
 
-
-
         public IActionResult Index()
         {
             var experiences = _experienceRepository.GetAllExperiences().OrderByDescending(e => e.Date).Take(6);
-            Debug.WriteLine("ExperienceID: " + experiences.ElementAt(0).Product.ProductName);
             return View(experiences);
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "O stranici";
+        public IActionResult About() => View();
 
-            return View();
-        }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
+        public IActionResult Contact() => View();
+       
 
         public IActionResult Error()
         {

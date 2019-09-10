@@ -33,10 +33,8 @@ namespace ProductExperiences.Controllers
 
         // GET: /<controller>/
         [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
+        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,10 +79,8 @@ namespace ProductExperiences.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
+        
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
@@ -160,10 +156,8 @@ namespace ProductExperiences.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description); ;
+
 
 
 
@@ -171,14 +165,11 @@ namespace ProductExperiences.Controllers
             }
 
         }
-        
+
         [Authorize]
         [HttpGet]
-        public IActionResult ChangePassword()
-        {  
-
-            return View();
-        }
+        public IActionResult ChangePassword() => View();
+       
 
         [Authorize]
         [HttpPost]
@@ -211,11 +202,9 @@ namespace ProductExperiences.Controllers
 
         }
 
-        [HttpGet] 
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
+        [HttpGet]
+        public IActionResult AccessDenied() => View();
+       
 
         
         public async Task<JsonResult> UserAlreadyExistsAsync(string userName)

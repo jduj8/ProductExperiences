@@ -44,18 +44,11 @@ namespace ProductExperiences.Controllers
         public async Task<IActionResult> Index(string category, string searchTerm, int? pageNumber)
         {
 
-            /*
-            if (User.IsInRole("Admin"))
-            {
-                TempData["returnUrlForAdmin"] = Request.Host.ToString() + Request.Path.ToString(); //get full Url
-            }
-            */
-
             IOrderedQueryable<Experience> query;
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-                if (string.IsNullOrEmpty(category) || category == "Sve kategorije")
+                if (string.IsNullOrEmpty(category) || category.Equals("Sve kategorije"))
                 {
                     query = _experienceRepository.GetAllExperiences().AsQueryable().OrderByDescending(e => e.Date);
                 }
@@ -71,7 +64,8 @@ namespace ProductExperiences.Controllers
                 query = _experienceRepository.GetExperiencesWithProductName(searchTerm).AsQueryable().OrderByDescending(e => e.Date);                
             }
 
-            ViewData["category"] = string.IsNullOrEmpty(category) ? "Sve kategorije" : category;                     
+            //ViewData["category"] = string.IsNullOrEmpty(category) ? "Sve kategorije" : category;
+            ViewData["category"] = category ?? "Sve kategorije";
             ViewData["searchTerm"] = searchTerm;
 
             int pageSize = 6;
@@ -164,7 +158,7 @@ namespace ProductExperiences.Controllers
                 return RedirectToAction("Edit", new { experienceID = checkExist.ElementAt(0).ExperienceID });
             }
 
-            ExperienceCreateForExistingProductViewModel experienceCreateVM = new ExperienceCreateForExistingProductViewModel
+            var experienceCreateVM = new ExperienceCreateForExistingProductViewModel
             {
                 ProductName = product.ProductName,
                 CategoryID = product.Category.CategoryID.ToString()       
@@ -263,7 +257,7 @@ namespace ProductExperiences.Controllers
 
                 string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(experienceEditVM.Photo, _hostingEnvironment, "images/products");
 
-                if (uniqueFileName != null && System.IO.File.Exists("wwwroot/images/products/" + experienceEditVM.ExistingPhotoPath))
+                if (!string.IsNullOrEmpty(uniqueFileName) && System.IO.File.Exists("wwwroot/images/products/" + experienceEditVM.ExistingPhotoPath))
                 {
                     try
                     {
@@ -276,7 +270,7 @@ namespace ProductExperiences.Controllers
                 }
 
 
-                var photoPath = uniqueFileName == null ? experienceEditVM.ExistingPhotoPath : uniqueFileName;
+                var photoPath = uniqueFileName ?? experienceEditVM.ExistingPhotoPath;
 
                 var experience = new Experience
                 {
@@ -307,7 +301,7 @@ namespace ProductExperiences.Controllers
 
             if (User.IsInRole("Admin"))
             {
-               if (experience.UserName != User.Identity.Name)
+               if (!experience.UserName.Equals(User.Identity.Name))
                 {
                     return RedirectToAction("Index", new { category = "Sve kategorije" });
                 }

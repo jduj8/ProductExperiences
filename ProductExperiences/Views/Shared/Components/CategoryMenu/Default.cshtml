@@ -7,15 +7,9 @@
         @foreach (var category in Model)
         {
             var photoPath = "";
-            if (category.CategoryPhotoPath != null)
-            {
-                photoPath = "~/images/categories/" + (category.CategoryPhotoPath ?? "noImage.png");
-            }
 
-            else
-            {
-                photoPath = "~/images/categories/noImage.png";
-            }
+            photoPath = category.CategoryPhotoPath != null ? "~/images/categories/" + (category.CategoryPhotoPath) : "~/images/categories/noImage.png"; 
+            
             <li style="min-width:220px;">
                 
                 <a style="display:inline-block;"  asp-controller="Experience" asp-action="Index"
@@ -33,7 +27,7 @@
 <style>
     .category-dropdown {
         background-color: khaki;
-        height: 350px;
+        height: 400px;
         overflow: scroll;
     }
 

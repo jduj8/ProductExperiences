@@ -12,9 +12,10 @@
 <div class="row">
     <div class="col-md-6">
         <form enctype="multipart/form-data" method="post" asp-controller="Administration" asp-action="EditCategory">
-
             <input hidden asp-for="@Model.CategoryID" />
             <input hidden asp-for="@Model.ExistingPhotoPath" />
+
+
 
             <div class="form-group">
                 <label asp-for="CategoryName">Category name</label>
@@ -25,7 +26,7 @@
             <hr />
             <div class="form-group">
                 <div class="text-center">
-                    <img width="150" height="150" src="@photoPath" class="img-thumbnail" asp-append-version="true" />
+                    <img width="150" height="150" src="@Url.Content(photoPath)" class="img-thumbnail" asp-append-version="true" />
                 </div>
             </div>
             <hr />

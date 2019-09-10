@@ -86,13 +86,13 @@ else
     <script>
         
         function searchForUser() {
-            var users = document.getElementById("list").querySelectorAll("#list>div");
-            var searchTerm = document.getElementById("searchTerm");
-            var message = document.getElementById("message");
+            let users = document.getElementById("list").querySelectorAll("#list>div");
+            let searchTerm = document.getElementById("searchTerm");
+            let message = document.getElementById("message");
             message.style.display = 'block';
 
             for (var i = 0; i < users.length; i++) {
-                var user = document.getElementById(users[i].id);
+                let user = document.getElementById(users[i].id);
                 user.style.display = 'none';
                 if (users[i].id.toLowerCase() == searchTerm.value.toLowerCase()) {
                     user.style.display = 'block';

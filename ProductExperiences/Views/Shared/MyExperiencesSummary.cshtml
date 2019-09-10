@@ -2,26 +2,10 @@
 
 @{
     var photoPath = "";
-    if (Model.PhotoPath != null)
-    {
-        photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png");
-    }
+    photoPath = Model.PhotoPath != null ? photoPath = "~/images/products/" + (Model.PhotoPath ?? "noImage.png") : photoPath = "~/images/products/noImage.png";
 
-    else
-    {
-        photoPath = "~/images/products/noImage.png";
-    }
     var productName = "";
-    if (Model.Product.ProductName.Length > 30)
-    {
-        productName = Model.Product.ProductName.Substring(0, 26) + "...";
-    }
-
-    else
-    {
-        productName = Model.Product.ProductName;
-
-    }
+    productName = Model.Product.ProductName.Length > 30 ? Model.Product.ProductName.Substring(0, 26) + "..." : Model.Product.ProductName;
 }
 
 <div class="col-sm-6 col-lg-4 col-md-4">

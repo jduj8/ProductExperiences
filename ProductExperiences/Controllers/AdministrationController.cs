@@ -33,10 +33,8 @@ namespace ProductExperiences.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
+        public IActionResult CreateRole() => View();
+       
 
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel createRoleVM)
@@ -121,10 +119,8 @@ namespace ProductExperiences.Controllers
                     return RedirectToAction("ListRoles");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
+               
 
                 return View(editRoleVM);
             }
@@ -268,11 +264,8 @@ namespace ProductExperiences.Controllers
                     return RedirectToAction("ListUsers");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
+               
                 return View(editUserVM);
             }
         }
@@ -297,10 +290,8 @@ namespace ProductExperiences.Controllers
                     return RedirectToAction("ListUsers");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
+
 
                 return View("ListUsers");
             }
@@ -326,10 +317,8 @@ namespace ProductExperiences.Controllers
                     return RedirectToAction("ListRoles");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
+
 
                 return View("ListRoles");
             }
@@ -343,20 +332,15 @@ namespace ProductExperiences.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddCategory()
-        {
-            return View();
-        }
+        public IActionResult AddCategory() => View();
+        
 
         [HttpPost]
         public IActionResult AddCategory(AddCategoryViewModel addCategoryVM)
         {
             if (ModelState.IsValid)
             {
-                Debug.WriteLine(addCategoryVM.Photo.FileName);
-                Debug.WriteLine(_hostingEnvironment.ApplicationName.ToString());
                 string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(addCategoryVM.Photo, _hostingEnvironment, "images/categories");
-                Debug.WriteLine(uniqueFileName);
                 var category = new Category
                 {
                     CategoryName = addCategoryVM.CategoryName,
@@ -391,7 +375,7 @@ namespace ProductExperiences.Controllers
 
                 string uniqueFileName = PhotoHelper.SaveImageAndReturnUniqueFileName(editCategoryVM.Photo, _hostingEnvironment, "images/categories");
 
-                if (uniqueFileName != null && System.IO.File.Exists("wwwroot/images/categories/" + editCategoryVM.ExistingPhotoPath))
+                if (!string.IsNullOrEmpty(uniqueFileName) && System.IO.File.Exists("wwwroot/images/categories/" + editCategoryVM.ExistingPhotoPath))
                 {
                     try
                     {
@@ -404,7 +388,7 @@ namespace ProductExperiences.Controllers
                 }
 
                 var existingPhotoPath = editCategoryVM.ExistingPhotoPath;
-                var photoPath = uniqueFileName == null ? existingPhotoPath : uniqueFileName;
+                var photoPath = uniqueFileName ?? existingPhotoPath;
 
                 var categoryChanges = new Category
                 {

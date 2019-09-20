@@ -9,6 +9,7 @@ using ProductExperiences.Models;
 
 namespace ProductExperiences.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         private IExperienceRepository _experienceRepository;

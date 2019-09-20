@@ -21,6 +21,7 @@ using ReflectionIT.Mvc.Paging;
 
 namespace ProductExperiences.Controllers
 {
+    [RequireHttps]
     public class ExperienceController : Controller
     {
 

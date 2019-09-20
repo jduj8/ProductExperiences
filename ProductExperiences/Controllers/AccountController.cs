@@ -8,20 +8,25 @@ using ProductExperiences.ViewModels;
 
 using Microsoft.AspNetCore.Authorization;
 using ProductExperiences.Helpers;
+using ProductExperiences.Services;
+using System.Text.Encodings.Web;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ProductExperiences.Controllers
 {
+    [RequireHttps]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IEmailSender _emailSender;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -57,16 +62,31 @@ namespace ProductExperiences.Controllers
 
                     if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
-                        await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirani u sustav," +
-                        " za sva dodatna pitanja slobodno nas kontaktirajte!");
+                        
+                        await _emailSender.SendEmailAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste registrirani u sustav, za sva dodatna pitanja slobodno nas kontaktirajte!");
                         return RedirectToAction("ListUsers", "Administration");
 
                     }
 
-                    await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirali u sustav," +
-                        " za sva dodatna pitanja slobodno nas kontaktirajte!");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    //await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirali u sustav," +
+                    //  " za sva dodatna pitanja slobodno nas kontaktirajte!");
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //return RedirectToAction("index", "home");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var codeLink = Url.Action("ConfirmEmail", "Account", new
+                        {
+                            userId = user.Id,
+                            code = code
+                        }, 
+                        protocol: HttpContext.Request.Scheme);
+                    
+                    await _emailSender.SendEmailAsync(registerVM.Email, "Potvrdite vašu mail adresu",
+                         $"Potvrdite vaš račun jednim <a href = '{HtmlEncoder.Default.Encode(codeLink)}'> KLIKOM </a>.");
+
+                    return RedirectToAction("CheckEmail");
+                
                 }
 
                 foreach (var error in result.Errors)
@@ -78,6 +98,26 @@ namespace ProductExperiences.Controllers
             return View(registerVM);
         }
 
+        public IActionResult CheckEmail() => View();
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+
         [HttpGet]
         public IActionResult Login() => View();
         
@@ -88,9 +128,19 @@ namespace ProductExperiences.Controllers
             if (ModelState.IsValid)
             {
 
+                var user = await _userManager.FindByNameAsync(model.UserName);
+
+                if (user != null)
+                {
+                    if (! await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        ModelState.AddModelError(string.Empty, "Morate potvrditi vašu e-mail adresu");
+                        return View(model);
+                    }
+                }
 
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.UserName, model.Password, model.RememberMe, false);
+                    model.UserName, model.Password, model.RememberMe, lockoutOnFailure:true);
 
                 if (result.Succeeded)
                 {
@@ -151,7 +201,7 @@ namespace ProductExperiences.Controllers
 
                 if (result.Succeeded)
                 {
-                    await MessageHelper.SendEmailFromAppToUserAsync(user.Email, "Product experiences stranica", "Uspješno ste izmjenili osobne podatke!");
+                    await _emailSender.SendEmailAsync(user.Email, "Product experiences stranica", "Uspješno ste izmjenili osobne podatke!");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -196,7 +246,7 @@ namespace ProductExperiences.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            await MessageHelper.SendEmailFromAppToUserAsync(user.Email, "Product experiences stranica", "Uspješno ste izmjenili lozinku!");
+            await _emailSender.SendEmailAsync(user.Email, "Product experiences stranica", "Uspješno ste izmjenili lozinku!");
 
             return RedirectToAction("Index", "Home");
 

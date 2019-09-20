@@ -16,6 +16,7 @@ using ProductExperiences.ViewModels.AdministrationViewModels;
 
 namespace ProductExperiences.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {

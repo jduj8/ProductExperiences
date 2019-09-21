@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using ProductExperiences.Helpers;
 using ProductExperiences.Services;
 using System.Text.Encodings.Web;
+using ProductExperiences.Data.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +19,11 @@ namespace ProductExperiences.Controllers
     [RequireHttps]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IEmailSender emailSender)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -48,10 +49,12 @@ namespace ProductExperiences.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
+                    FirstName = registerVM.FirstName,
+                    LastName = registerVM.LastName,
                     UserName = registerVM.UserName,
-                    Email = registerVM.Email
+                    Email = registerVM.Email              
                 };
 
                 var result = await _userManager.CreateAsync(user, registerVM.Password);
@@ -67,25 +70,11 @@ namespace ProductExperiences.Controllers
                         return RedirectToAction("ListUsers", "Administration");
 
                     }
+                   
 
-                    //await MessageHelper.SendEmailFromAppToUserAsync(registerVM.Email, "Product experiences stranica", "Uspješno ste se registrirali u sustav," +
-                    //  " za sva dodatna pitanja slobodno nas kontaktirajte!");
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return RedirectToAction("index", "home");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                    var codeLink = Url.Action("ConfirmEmail", "Account", new
-                        {
-                            userId = user.Id,
-                            code = code
-                        }, 
-                        protocol: HttpContext.Request.Scheme);
+                    await SendConfirmationEmail(user);
                     
-                    await _emailSender.SendEmailAsync(registerVM.Email, "Potvrdite vašu mail adresu",
-                         $"Potvrdite vaš račun jednim <a href = '{HtmlEncoder.Default.Encode(codeLink)}'> KLIKOM </a>.");
-
-                    return RedirectToAction("CheckEmail");
+                    return RedirectToAction("CheckEmail", user);
                 
                 }
 
@@ -98,7 +87,22 @@ namespace ProductExperiences.Controllers
             return View(registerVM);
         }
 
-        public IActionResult CheckEmail() => View();
+        [HttpGet]
+        public IActionResult CheckEmail(ApplicationUser user) => View(user);
+
+        [HttpPost]
+        public async Task<IActionResult> CheckEmail(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user != null)
+            {
+                await SendConfirmationEmail(user);
+            }
+
+
+            return View("CheckEmail", user);
+        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -175,8 +179,10 @@ namespace ProductExperiences.Controllers
             var updatePersonalDataVM = new UpdatePersonalDataViewModel
             {
                 UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Email = user.Email
-                
+               
             };
 
             return View(updatePersonalDataVM);
@@ -196,6 +202,8 @@ namespace ProductExperiences.Controllers
             else
             {
                 user.Email = updatePersonalDataVM.Email;
+                user.FirstName = updatePersonalDataVM.FirstName;
+                user.LastName = updatePersonalDataVM.LastName;
 
                 var result = await _userManager.UpdateAsync(user);
 
@@ -254,8 +262,22 @@ namespace ProductExperiences.Controllers
 
         [HttpGet]
         public IActionResult AccessDenied() => View();
-       
+        
+        [NonAction]
+        public async Task SendConfirmationEmail(ApplicationUser user)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
+            var codeLink = Url.Action("ConfirmEmail", "Account", new
+            {
+                userId = user.Id,
+                code = code
+            },
+                protocol: HttpContext.Request.Scheme);
+
+            await _emailSender.SendEmailAsync(user.Email, "Potvrdite vašu mail adresu",
+                 $"Potvrdite vaš račun jednim <a href = '{HtmlEncoder.Default.Encode(codeLink)}'> KLIKOM </a>.");
+        }
         
         public async Task<JsonResult> UserAlreadyExistsAsync(string userName)
         {

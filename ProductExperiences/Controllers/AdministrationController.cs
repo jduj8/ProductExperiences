@@ -21,11 +21,11 @@ namespace ProductExperiences.Controllers
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ICategoryRepository categoryRepository, IHostingEnvironment hostingEnvironment)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, ICategoryRepository categoryRepository, IHostingEnvironment hostingEnvironment)
         {
             _roleManager = roleManager;
             _userManager = userManager;

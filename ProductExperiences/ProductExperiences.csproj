@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190920193817_FirstAndLastNameColumn.cs" />
+    <Compile Remove="Migrations\20190920193817_FirstAndLastNameColumn.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BootstrapMvc.Bootstrap4" Version="1.2.0" />
     <PackageReference Include="MailKit" Version="2.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />

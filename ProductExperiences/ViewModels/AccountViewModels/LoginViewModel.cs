@@ -9,6 +9,7 @@ namespace ProductExperiences.ViewModels
 {
     public class LoginViewModel
     {
+
         [Required(ErrorMessage = "Unesite korisničko ime")]
         [Remote("UserExistsAsync", "Account", ErrorMessage = "Korisničko ime ne postoji u sustavu")]
         public string UserName { get; set; }

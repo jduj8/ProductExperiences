@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProductExperiences.Data;
 using ProductExperiences.Data.Interfaces;
 using ProductExperiences.Data.Mocks;
+using ProductExperiences.Data.Models;
 using ProductExperiences.Data.Repositories;
 using ProductExperiences.Entities;
 using ProductExperiences.Services;
@@ -42,7 +43,7 @@ namespace ProductExperiences
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.Password.RequiredLength = 6;

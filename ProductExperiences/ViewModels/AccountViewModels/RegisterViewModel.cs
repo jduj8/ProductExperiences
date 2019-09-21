@@ -9,6 +9,13 @@ namespace ProductExperiences.ViewModels
 {
     public class RegisterViewModel
     {
+
+        [Required(ErrorMessage = "Unesite ime")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Unseite prezime")]
+        public string LastName { get; set; }
+
         [Required(ErrorMessage = "Unesite korisničko ime")]
         [MinLength(4, ErrorMessage = "Korisničko ime mora imati najmanje 4 znaka")]
         [Remote("UserAlreadyExistsAsync", "Account", ErrorMessage = "Korisničko ime se već koristi")]

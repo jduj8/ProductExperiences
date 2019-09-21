@@ -10,6 +10,12 @@ namespace ProductExperiences.ViewModels
     {
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = "Unesite ime")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Unesite prezime")]
+        public string LastName { get; set; }
+
         [Required(ErrorMessage = "Unesite mail")]
         [EmailAddress(ErrorMessage = "Nevaljan email")]
         public string Email { get; set; }

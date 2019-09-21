@@ -1,5 +1,5 @@
-﻿
-@*model CheckEmailModel*@
+﻿@model ApplicationUser
+
 @{
     ViewData["Title"] = "Check email";
 }
@@ -7,5 +7,10 @@
 <h2>Provjerite email</h2>
 <hr/>
 <p>
-    Provjerite inbox, konfirmacijski link vam je poslan!
+   Kako bi registracija bila potpuna potvrdite vašu email adresu. Konfirmacijski link vam je poslan na ovu email adresu: @Model.Email!
 </p>
+
+<form method="post" asp-action="CheckEmail" asp-controller="Account" asp-route-userName="@Model.UserName">
+    <label>Niste dobili konfirmacijski email?</label>
+    <button type="submit" class="btn btn-info">Ponovno pošalji konfirmacijski email</button>
+</form>

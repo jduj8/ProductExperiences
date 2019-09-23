@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ProductExperiences.ViewModels;
-
-using Microsoft.AspNetCore.Authorization;
-using ProductExperiences.Helpers;
-using ProductExperiences.Services;
-using System.Text.Encodings.Web;
 using ProductExperiences.Data.Models;
+using ProductExperiences.Services;
+using ProductExperiences.ViewModels;
+using ProductExperiences.ViewModels.AccountViewModels;
+using System;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -78,10 +75,7 @@ namespace ProductExperiences.Controllers
                 
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                AddErrors(result);
             }
 
             return View(registerVM);
@@ -214,10 +208,7 @@ namespace ProductExperiences.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description); ;
-
-
-
+                AddErrors(result);
 
                 return View(updatePersonalDataVM);
             }
@@ -261,8 +252,96 @@ namespace ProductExperiences.Controllers
         }
 
         [HttpGet]
+        public IActionResult ForgotPassword() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgotPasswordVM)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(forgotPasswordVM.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var codeLink = Url.Action("ResetPassword", "Account", new
+                {
+                    userId = user.Id,
+                    code = code
+                },
+                protocol: HttpContext.Request.Scheme);
+
+
+                await _emailSender.SendEmailAsync(forgotPasswordVM.Email, "Reset Password",
+                   $"Please reset your password by clicking here: <a href='{codeLink}'>link</a>");
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(forgotPasswordVM);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation() => View();
+      
+
+        [HttpGet]
+        public IActionResult ResetPassword(string code = null)
+        {
+            if (code == null)
+            {
+                throw new ApplicationException("A code must be supplied for password reset.");
+            }
+            var model = new ResetPasswordViewModel { Code = code };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            AddErrors(result);
+
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult AccessDenied() => View();
-        
+
+        [NonAction]
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);          
+        }
+
         [NonAction]
         public async Task SendConfirmationEmail(ApplicationUser user)
         {
@@ -282,6 +361,12 @@ namespace ProductExperiences.Controllers
         public async Task<JsonResult> UserAlreadyExistsAsync(string userName)
         {
             var result = await _userManager.FindByNameAsync(userName);
+            return Json(result == null);
+        }
+
+        public async Task<JsonResult> EmailAlreadyExistsAsync(string email)
+        {
+            var result = await _userManager.FindByEmailAsync(email);
             return Json(result == null);
         }
 

@@ -23,6 +23,7 @@ namespace ProductExperiences.ViewModels
 
         [Required(ErrorMessage = "Unesite mail")]
         [EmailAddress(ErrorMessage = "Nevaljan email")]
+        [Remote("EmailAlreadyExistsAsync", "Account", ErrorMessage = "Ovaj email se već koristi")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Unesite lozinku")]
